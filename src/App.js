@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="App">
         <p>
-        Learn React
+        Dummy Payments
         </p>
     </div>
   );
