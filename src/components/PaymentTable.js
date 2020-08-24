@@ -1,8 +1,10 @@
 import React from "react";
-import BootstrapTable from "react-bootstrap/Table";
+
+import GridComponent from "./GridComponent";
+import Heading from "./HeadingComponent";
 
 function PaymentTable(props) {
-  console.log("table run")
+  console.log("table run");
   const heading = [
     "Unique request number",
     "Name",
@@ -32,18 +34,14 @@ function PaymentTable(props) {
 
   return (
     <div className="center">
-      <h2>Payment Table</h2>
+      <Heading title="Payment Table" />
 
       <br />
 
-      <div className="tableDiv">
-        <BootstrapTable striped bordered hover size="sm" responsive="true">
-          <thead>
-            <tr>{tableHeadingList}</tr>
-          </thead>
-          <tbody>{entryRows}</tbody>
-        </BootstrapTable>
-      </div>
+      <GridComponent
+        tableHeadingList={tableHeadingList}
+        entryRows={entryRows}
+      />
     </div>
   );
 }

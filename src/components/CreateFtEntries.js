@@ -2,13 +2,18 @@ import React, { useState } from "react";
 
 import BootStrapForm from "react-bootstrap/Form";
 import BootStrapCol from "react-bootstrap/Col";
-import BootStrapButton from "react-bootstrap/Button";
+
+import Heading from "./HeadingComponent";
+import InputComponent from "./InputComponent";
+import Button from "./Button";
 
 function CreateFtEntries(props) {
   const [beneficiaryName, setbeneName] = useState("");
   const [beneficiaryAddress, setbeneAddress] = useState("");
   const [beneficiaryBankIfsc, setbeneIfsc] = useState("HDFC0000001");
-  const [beneficiaryAccountNumber, setbeneAccountNumber] = useState("00011020001772");
+  const [beneficiaryAccountNumber, setbeneAccountNumber] = useState(
+    "00011020001772"
+  );
   const [transferAmount, setAmount] = useState("");
   const [transferType, setTransferType] = useState("FT");
 
@@ -52,7 +57,7 @@ function CreateFtEntries(props) {
   }
 
   function updateEntryList(e) {
-    let uniqueRequestNo = randomString(10);
+    let uniqueRequestNo = uniqueRequestNumberGenerator(10);
 
     let messageToBene = "demo payment";
 
@@ -73,7 +78,7 @@ function CreateFtEntries(props) {
       messageToBene,
       ispaymentDone,
       uniqueRefrenceNumber,
-      error
+      error,
     };
 
     const tempEntryList = [...props.paymentList];
@@ -83,7 +88,7 @@ function CreateFtEntries(props) {
     props.setPaymentList(tempEntryList);
   }
 
-  function randomString(length) {
+  function uniqueRequestNumberGenerator(length) {
     const chars =
       "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     let result = "";
@@ -94,79 +99,58 @@ function CreateFtEntries(props) {
 
   return (
     <div className="createcenter">
-      <div>
-        <h2>Create payment Entry</h2>
-      </div>
+      <Heading title="Create Payment Entries" />
 
       <div>
         <BootStrapForm>
           <BootStrapForm.Row>
-            <BootStrapForm.Group
-              as={BootStrapCol}
-              xs="auto"
+            <InputComponent
+              xs={"auto"}
               controlId="formName"
-            >
-              <BootStrapForm.Label>Name</BootStrapForm.Label>
-              <BootStrapForm.Control
-                type="text"
-                value={beneficiaryName}
-                onChange={onChangeBeneName}
-                placeholder="Beneficiary Name"
-              />{" "}
-            </BootStrapForm.Group>
-            <BootStrapForm.Group
-              as={BootStrapCol}
+              label="Name"
+              type="text"
+              value={beneficiaryName}
+              onchangeFun={onChangeBeneName}
+              placeholder="Beneficiary Name"
+            />
+            <InputComponent
               xs={5}
               controlId="formAddress"
-            >
-              <BootStrapForm.Label>Address</BootStrapForm.Label>
-              <BootStrapForm.Control
-                type="text"
-                value={beneficiaryAddress}
-                onChange={onChangeBeneAddress}
-                placeholder="Beneficiary Address"
-              />
-            </BootStrapForm.Group>
-            <BootStrapForm.Group
-              as={BootStrapCol}
-              xs="auto"
+              label="Address"
+              type="text"
+              value={beneficiaryAddress}
+              onchangeFun={onChangeBeneAddress}
+              placeholder="Beneficiary Address"
+            />
+            <InputComponent
+              xs={"auto"}
               controlId="formIfsc"
-            >
-              <BootStrapForm.Label>IFSC</BootStrapForm.Label>
-              <BootStrapForm.Control
-                type="text"
-                value={beneficiaryBankIfsc}
-                onChange={onChangeBeneIfsc}
-                placeholder="Beneficiary Bank IFSC"
-              />
-            </BootStrapForm.Group>
+              label="IFSC"
+              type="text"
+              value={beneficiaryBankIfsc}
+              onchangeFun={onChangeBeneIfsc}
+              placeholder="Beneficiary Bank IFSC"
+            />
           </BootStrapForm.Row>
           <BootStrapForm.Row>
-            <BootStrapForm.Group
-              as={BootStrapCol}
+            <InputComponent
               xs={4}
               controlId="formAccount"
-            >
-              <BootStrapForm.Label>Account</BootStrapForm.Label>
-              <BootStrapForm.Control
-                value={beneficiaryAccountNumber}
-                onChange={onChangeAccountNumber}
-                placeholder="Beneficiary Bank Account"
-              />
-            </BootStrapForm.Group>
-            <BootStrapForm.Group
-              as={BootStrapCol}
+              label="Account No"
+              type="text"
+              value={beneficiaryAccountNumber}
+              onchangeFun={onChangeAccountNumber}
+              placeholder="Beneficiary Bank Account"
+            />
+            <InputComponent
               xs={5}
               controlId="formAmount"
-            >
-              <BootStrapForm.Label>Amount</BootStrapForm.Label>
-              <BootStrapForm.Control
-                value={transferAmount}
-                onChange={onChangeAmount}
-                placeholder="Amount"
-              />
-            </BootStrapForm.Group>
-
+              label="Amount"
+              type="text"
+              value={transferAmount}
+              onchangeFun={onChangeAmount}
+              placeholder="Amount"
+            />
             <BootStrapForm.Group
               as={BootStrapCol}
               xs="auto"
@@ -185,9 +169,11 @@ function CreateFtEntries(props) {
             </BootStrapForm.Group>
           </BootStrapForm.Row>
           <BootStrapForm.Group>
-            <BootStrapButton variant="success" onClick={updateEntryList}>
-              Success
-            </BootStrapButton>{" "}
+            <Button
+              text="Add entry"
+              variant="success"
+              buttonClick={updateEntryList}
+            />{" "}
           </BootStrapForm.Group>
         </BootStrapForm>
       </div>
