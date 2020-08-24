@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 
 import BootStrapForm from "react-bootstrap/Form";
+import BootStrapCol from "react-bootstrap/Col";
 import BootStrapButton from "react-bootstrap/Button";
 
 function CreateFtEntries(props) {
   const [beneficiaryName, setbeneName] = useState("");
   const [beneficiaryAddress, setbeneAddress] = useState("");
-  const [beneficiaryBankIfsc, setbeneIfsc] = useState("");
-  const [beneficiaryAccountNumber, setbeneAccountNumber] = useState("");
+  const [beneficiaryBankIfsc, setbeneIfsc] = useState("HDFC0000001");
+  const [beneficiaryAccountNumber, setbeneAccountNumber] = useState("00011020001772");
   const [transferAmount, setAmount] = useState("");
   const [transferType, setTransferType] = useState("FT");
 
@@ -57,6 +58,10 @@ function CreateFtEntries(props) {
 
     let ispaymentDone = false;
 
+    let uniqueRefrenceNumber = "NA";
+
+    let error = "big error";
+
     let paymentObject = {
       uniqueRequestNo,
       beneficiaryName,
@@ -67,6 +72,8 @@ function CreateFtEntries(props) {
       transferType,
       messageToBene,
       ispaymentDone,
+      uniqueRefrenceNumber,
+      error
     };
 
     const tempEntryList = [...props.paymentList];
@@ -87,66 +94,103 @@ function CreateFtEntries(props) {
 
   return (
     <div className="createcenter">
-      <h2>Create payment Entry</h2>
+      <div>
+        <h2>Create payment Entry</h2>
+      </div>
 
-      <BootStrapForm>
-        <BootStrapForm.Row>
-          <BootStrapForm.Group as={BootStrapForm.Col} xs={7} controlId="formName">
-            <BootStrapForm.Label>Name</BootStrapForm.Label>
-            <BootStrapForm.Control
-              type="text"
-              value={beneficiaryName}
-              onChange={onChangeBeneName}
-              placeholder="Beneficiary Name"
-            />{" "}
+      <div>
+        <BootStrapForm>
+          <BootStrapForm.Row>
+            <BootStrapForm.Group
+              as={BootStrapCol}
+              xs="auto"
+              controlId="formName"
+            >
+              <BootStrapForm.Label>Name</BootStrapForm.Label>
+              <BootStrapForm.Control
+                type="text"
+                value={beneficiaryName}
+                onChange={onChangeBeneName}
+                placeholder="Beneficiary Name"
+              />{" "}
+            </BootStrapForm.Group>
+            <BootStrapForm.Group
+              as={BootStrapCol}
+              xs={5}
+              controlId="formAddress"
+            >
+              <BootStrapForm.Label>Address</BootStrapForm.Label>
+              <BootStrapForm.Control
+                type="text"
+                value={beneficiaryAddress}
+                onChange={onChangeBeneAddress}
+                placeholder="Beneficiary Address"
+              />
+            </BootStrapForm.Group>
+            <BootStrapForm.Group
+              as={BootStrapCol}
+              xs="auto"
+              controlId="formIfsc"
+            >
+              <BootStrapForm.Label>IFSC</BootStrapForm.Label>
+              <BootStrapForm.Control
+                type="text"
+                value={beneficiaryBankIfsc}
+                onChange={onChangeBeneIfsc}
+                placeholder="Beneficiary Bank IFSC"
+              />
+            </BootStrapForm.Group>
+          </BootStrapForm.Row>
+          <BootStrapForm.Row>
+            <BootStrapForm.Group
+              as={BootStrapCol}
+              xs={4}
+              controlId="formAccount"
+            >
+              <BootStrapForm.Label>Account</BootStrapForm.Label>
+              <BootStrapForm.Control
+                value={beneficiaryAccountNumber}
+                onChange={onChangeAccountNumber}
+                placeholder="Beneficiary Bank Account"
+              />
+            </BootStrapForm.Group>
+            <BootStrapForm.Group
+              as={BootStrapCol}
+              xs={5}
+              controlId="formAmount"
+            >
+              <BootStrapForm.Label>Amount</BootStrapForm.Label>
+              <BootStrapForm.Control
+                value={transferAmount}
+                onChange={onChangeAmount}
+                placeholder="Amount"
+              />
+            </BootStrapForm.Group>
+
+            <BootStrapForm.Group
+              as={BootStrapCol}
+              xs="auto"
+              controlId="formTpe"
+            >
+              <BootStrapForm.Label>Type</BootStrapForm.Label>
+              <BootStrapForm.Control
+                as="select"
+                onChange={onChangeTransferType}
+                defaultValue={transferType}
+              >
+                <option>NEFT</option>
+                <option>RTGS</option>
+                <option>FT</option>
+              </BootStrapForm.Control>
+            </BootStrapForm.Group>
+          </BootStrapForm.Row>
+          <BootStrapForm.Group>
+            <BootStrapButton variant="success" onClick={updateEntryList}>
+              Success
+            </BootStrapButton>{" "}
           </BootStrapForm.Group>
-          <BootStrapForm.Group as={BootStrapForm.Col} xs="auto" controlId="formAddress">
-            <BootStrapForm.Label>Address</BootStrapForm.Label>
-            <BootStrapForm.Control
-              type="text"
-              value={beneficiaryAddress}
-              onChange={onChangeBeneAddress}
-              placeholder="Beneficiary Address"
-            />
-          </BootStrapForm.Group>
-        </BootStrapForm.Row>
-        <BootStrapForm.Group>
-          <BootStrapForm.Control
-            type="text"
-            value={beneficiaryBankIfsc}
-            onChange={onChangeBeneIfsc}
-            placeholder="Beneficiary Bank IFSC"
-          />
-          <br />
-          <BootStrapForm.Control
-            value={beneficiaryAccountNumber}
-            size="sm"
-            onChange={onChangeAccountNumber}
-            placeholder="Beneficiary Bank Account"
-          />
-          <br />
-          <BootStrapForm.Control
-            value={transferAmount}
-            size="sm"
-            onChange={onChangeAmount}
-            placeholder="Amount"
-          />
-          <br />
-          <BootStrapForm.Control
-            as="select"
-            onChange={onChangeTransferType}
-            defaultValue={transferType}
-          >
-            <option>NEFT</option>
-            <option>RTGS</option>
-            <option>FT</option>
-          </BootStrapForm.Control>
-          <br />
-          <BootStrapButton variant="success" onClick={updateEntryList}>
-            Success
-          </BootStrapButton>{" "}
-        </BootStrapForm.Group>
-      </BootStrapForm>
+        </BootStrapForm>
+      </div>
     </div>
   );
 }

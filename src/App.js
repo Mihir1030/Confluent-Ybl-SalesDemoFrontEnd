@@ -18,6 +18,8 @@ function App() {
       <ButtonGroup
         showCreateEntry={showCreateEntry}
         setShowCreateEntry={setShowCreateEntry}
+        paymentList={paymentList}
+        setPaymentList={setPaymentList}
       />
 
       <br />
