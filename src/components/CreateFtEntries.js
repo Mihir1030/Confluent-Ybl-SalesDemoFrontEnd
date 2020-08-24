@@ -177,6 +177,7 @@ function CreateFtEntries(props) {
           </BootStrapForm.Group>
         </BootStrapForm>
       </div>
+      
     </div>
   );
 }

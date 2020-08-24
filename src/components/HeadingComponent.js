@@ -3,7 +3,7 @@ import React from "react";
 function HeadingComponent(props) {
 
     return(
-        <div>
+        <div className="headingComponent">
         <h2>{props.title}</h2>
       </div>
     );

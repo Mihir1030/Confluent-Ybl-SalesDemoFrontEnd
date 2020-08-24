@@ -3,9 +3,11 @@ import React, { useState } from "react";
 import ButtonGroup from "./components/ButtonGroup";
 import CreateEntry from "./components/CreateFtEntries";
 import PaymentTable from "./components/PaymentTable";
+import Heading from "./components/HeadingComponent";
 
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+
 
 function App() {
   const [showCreateEntry, setShowCreateEntry] = useState(false);
@@ -13,7 +15,8 @@ function App() {
 
   return (
     <div className="App">
-      <p>Dummy Payments</p>
+
+      <Heading title="Yes Banking Services" />
 
       <ButtonGroup
         showCreateEntry={showCreateEntry}
@@ -33,7 +36,7 @@ function App() {
 
       <br />
 
-      <PaymentTable paymentList={paymentList}/>
+      <PaymentTable paymentList={paymentList} />
     </div>
   );
 }
