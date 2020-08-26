@@ -38,7 +38,7 @@ function ButtonGroup(props) {
             console.log(data);
             tempPaymentArray[i].uniqueRefrenceNumber =
               data.uniqueRefrenceNumber;
-            tempPaymentArray[i].error = data.error;
+            tempPaymentArray[i].error = data.error.includes('IFSC')?'Incorrect IFSC code':'NA';
             tempPaymentArray[i].ispaymentDone = true;
 
             var filteredCurrentEnrty = props.paymentList.filter(function (el) {
