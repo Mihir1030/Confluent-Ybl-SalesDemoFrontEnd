@@ -14,7 +14,7 @@ function PaymentTable(props) {
     "Amount",
     "transfer Type",
     "Unique Refrence Number",
-    "Error",
+    "Error"
   ];
   const tableHeadingList = heading.map((h, index) => <th key={index}>{h}</th>);
 
