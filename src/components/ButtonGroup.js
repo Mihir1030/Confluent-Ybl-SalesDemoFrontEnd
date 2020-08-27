@@ -134,16 +134,16 @@ function ButtonGroup(props) {
       <Button
         text="Start Payment "
         badge={pendingPaymentsCountBadge}
-        variant="primary"
+        variant="outline-primary"
         buttonClick={startPayments}
       />{" "}
       <Button
         text="Payment Status"
-        variant="primary"
+        variant="outline-primary"
         buttonClick={checkStatus}
       />{" "}
-      <Button text="Balance" variant="primary" buttonClick={checkBalance} />{" "}
-      <Button text="Clear data" variant="primary" buttonClick={clearPaymentsData} />{" "}
+      <Button text="Balance" variant="outline-primary" buttonClick={checkBalance} />{" "}
+      <Button text="Clear data" variant="outline-primary" buttonClick={clearPaymentsData} />{" "}
     </div>
   );
 }

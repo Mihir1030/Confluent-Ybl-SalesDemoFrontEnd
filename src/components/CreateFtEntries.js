@@ -181,7 +181,7 @@ function CreateFtEntries(props) {
           <BootStrapForm.Group>
             <Button
               text="Add entry"
-              variant="success"
+              variant="outline-success"
               buttonClick={updateEntryList}
             />{" "}
           </BootStrapForm.Group>
