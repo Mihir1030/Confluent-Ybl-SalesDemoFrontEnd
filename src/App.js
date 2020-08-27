@@ -39,7 +39,7 @@ function App() {
 
       <br />
 
-      <StatusTable paymentList={paymentList} />
+      {!showCreateEntry ? <StatusTable paymentList={paymentList} /> : null}
 
       <br />
     </div>
