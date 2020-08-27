@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import ButtonGroup from "./components/ButtonGroup";
 import CreateEntry from "./components/CreateFtEntries";
 import PaymentTable from "./components/PaymentTable";
+import StatusTable from "./components/StatusTable";
 import Heading from "./components/HeadingComponent";
 
 import "./App.css";
@@ -37,6 +38,10 @@ function App() {
       <br />
 
       <PaymentTable paymentList={paymentList} />
+
+      <br />
+
+      <StatusTable paymentList={paymentList} />
     </div>
   );
 }

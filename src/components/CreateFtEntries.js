@@ -67,6 +67,8 @@ function CreateFtEntries(props) {
 
     let error = "big error";
 
+    let status = "";
+
     let paymentObject = {
       uniqueRequestNo,
       beneficiaryName,
@@ -79,6 +81,7 @@ function CreateFtEntries(props) {
       ispaymentDone,
       uniqueRefrenceNumber,
       error,
+      status,
     };
 
     const tempEntryList = [...props.paymentList];
