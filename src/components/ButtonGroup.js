@@ -129,6 +129,7 @@ function ButtonGroup(props) {
     <div className="buttonGroupTop">
       <Button
         text="Create Payment"
+        variant="outline-primary"
         buttonClick={changeCreateFtEntriesVisibility}
       />{" "}
       <Button
