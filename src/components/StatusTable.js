@@ -10,7 +10,8 @@ function StatusTable(props) {
     "Name",
     "Amount",
     "Unique Refrence Number",
-    "Status"
+    "Status",
+    "Error"
   ];
 
   const tableHeadingList = heading.map((h, index) => <th key={index}>{h}</th>);
@@ -22,6 +23,7 @@ function StatusTable(props) {
       <td>{e.transferAmount}</td>
       <td>{e.uniqueRefrenceNumber}</td>
       <td>{e.status}</td>
+      <td>{e.statusError}</td>
     </tr>
   ));
 

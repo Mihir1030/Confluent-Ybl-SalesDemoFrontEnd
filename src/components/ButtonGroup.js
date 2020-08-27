@@ -83,6 +83,7 @@ function ButtonGroup(props) {
 
             console.log(data);
             tempPaymentArray[i].status = data.statuscode;
+            tempPaymentArray[i].error = data.statusError;
 
             var filteredCurrentEnrty = props.paymentList.filter(function (el) {
               return el.uniqueRequestNo !== tempPaymentArray[i].uniqueRequestNo;

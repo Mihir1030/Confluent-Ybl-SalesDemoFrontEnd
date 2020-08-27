@@ -65,7 +65,9 @@ function CreateFtEntries(props) {
 
     let uniqueRefrenceNumber = "NA";
 
-    let error = "big error";
+    let error = "NA";
+
+    let statusError = "NA";
 
     let status = "";
 
@@ -81,6 +83,7 @@ function CreateFtEntries(props) {
       ispaymentDone,
       uniqueRefrenceNumber,
       error,
+      statusError,
       status,
     };
 
