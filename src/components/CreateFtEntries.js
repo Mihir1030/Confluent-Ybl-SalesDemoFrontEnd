@@ -171,6 +171,7 @@ function CreateFtEntries(props) {
                 <option>NEFT</option>
                 <option>RTGS</option>
                 <option>FT</option>
+                <option>IMPS</option>
               </BootStrapForm.Control>
             </BootStrapForm.Group>
           </BootStrapForm.Row>
