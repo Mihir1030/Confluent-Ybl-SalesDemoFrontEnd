@@ -4,49 +4,52 @@ import Badge from "react-bootstrap/Badge";
 import Button from "./Button";
 
 function ButtonGroup(props) {
-
-  const changeCreateFtEntriesVisibility = (e) => {
+  const changeCreateFtEntriesVisibility = (event) => {
     props.setShowCreateEntry(!props.showCreateEntry);
   };
 
-  const startPay = (e) => {
-    //00011020001772
-    //HDFC0000001
-    const tempPaymentArray = [...props.paymentList];
+  const startPayments = (event) => {
+    const tempPaymentsArray = [...props.paymentList];
 
-    for (const [i, payJson] of tempPaymentArray.entries()) {
-      if (payJson.ispaymentDone === false) {
+    for (const currentPaymentEntry of tempPaymentsArray) {
+      if (!currentPaymentEntry.ispaymentDone) {
         const requestOptions = {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payJson),
+          body: JSON.stringify(currentPaymentEntry),
         };
         fetch(
           "https://yes-sales-team-demo.herokuapp.com/yesapi/pay",
           requestOptions
         )
           .then(async (response) => {
-            const data = await response.json();
+            const paymentResponseData = await response.json();
 
             // check for error response
             if (!response.ok) {
               // get error message from body or default to response status
-              const error = (data && data.message) || response.status;
+              const error =
+                (paymentResponseData && paymentResponseData.message) ||
+                response.status;
               return Promise.reject(error);
             }
 
-            console.log(data);
-            tempPaymentArray[i].uniqueRefrenceNumber =
-              data.uniqueRefrenceNumber;
-            tempPaymentArray[i].error = data.error.includes('IFSC')?'Incorrect IFSC code':'NA';
-            tempPaymentArray[i].ispaymentDone = true;
+            currentPaymentEntry.uniqueRefrenceNumber =
+              paymentResponseData.uniqueRefrenceNumber;
+              currentPaymentEntry.error = paymentResponseData.error.includes(
+              "IFSC"
+            )
+              ? "Incorrect IFSC code"
+              : "NA";
+              currentPaymentEntry.ispaymentDone = true;
 
-            var filteredCurrentEnrty = props.paymentList.filter(function (el) {
-              return el.uniqueRequestNo !== tempPaymentArray[i].uniqueRequestNo;
-            });
-            filteredCurrentEnrty.push(tempPaymentArray[i]);
-            props.setPaymentList(filteredCurrentEnrty);
-            console.log(props.paymentList);
+            var tempPaymentListWithoutCurrentPaymentEntry = props.paymentList.filter(
+              (entry) =>
+                entry.uniqueRequestNo !==
+                currentPaymentEntry.uniqueRequestNo
+            );
+            tempPaymentListWithoutCurrentPaymentEntry.push(currentPaymentEntry);
+            props.setPaymentList(tempPaymentListWithoutCurrentPaymentEntry);
           })
           .catch((error) => {
             console.error("There was an error!", error);
@@ -55,42 +58,47 @@ function ButtonGroup(props) {
     }
   };
 
-  const checkStatus = (e) => {
-    //00011020001772
-    //HDFC0000001
-    const tempPaymentArray = [...props.paymentList];
+  const checkStatus = (event) => {
 
-    for (const [i, payJson] of tempPaymentArray.entries()) {
-      if (payJson.ispaymentDone === true) {
+    const tempPaymentsArray = [...props.paymentList];
+
+    for (const currentPaymentEntry of tempPaymentsArray) {
+      if (currentPaymentEntry.ispaymentDone) {
         const requestOptions = {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payJson),
+          body: JSON.stringify(currentPaymentEntry),
         };
         fetch(
           "https://yes-sales-team-demo.herokuapp.com/yesapi/status",
           requestOptions
         )
           .then(async (response) => {
-            const data = await response.json();
+            const paymentStatusReponseData = await response.json();
 
             // check for error response
             if (!response.ok) {
               // get error message from body or default to response status
-              const error = (data && data.message) || response.status;
+              const error =
+                (paymentStatusReponseData &&
+                  paymentStatusReponseData.message) ||
+                response.status;
               return Promise.reject(error);
             }
 
-            console.log(data);
-            tempPaymentArray[i].status = data.statuscode;
-            tempPaymentArray[i].statusError = data.error;
+            currentPaymentEntry.status =
+              paymentStatusReponseData.statuscode;
+              currentPaymentEntry.statusError =
+              paymentStatusReponseData.error;
+              currentPaymentEntry.isstatusDone = true;
 
-            var filteredCurrentEnrty = props.paymentList.filter(function (el) {
-              return el.uniqueRequestNo !== tempPaymentArray[i].uniqueRequestNo;
-            });
-            filteredCurrentEnrty.push(tempPaymentArray[i]);
-            props.setPaymentList(filteredCurrentEnrty);
-            console.log(props.paymentList);
+            var tempPaymentListWithoutCurrentEntry = props.paymentList.filter(
+              (paymentEntry) =>
+                paymentEntry.uniqueRequestNo !==
+                currentPaymentEntry.uniqueRequestNo
+            );
+            tempPaymentListWithoutCurrentEntry.push(currentPaymentEntry);
+            props.setPaymentList(tempPaymentListWithoutCurrentEntry);
           })
           .catch((error) => {
             console.error("There was an error! in status rest call", error);
@@ -99,18 +107,20 @@ function ButtonGroup(props) {
     }
   };
 
-  const checkBalance = (e) => {
+  const checkBalance = (event) => {
     console.log("balance");
   };
 
-  const clearData = (e) => {
+  const clearPaymentsData = (event) => {
     console.log("clear");
   };
 
-  const paymentBadge = (
+  const pendingPaymentsCountBadge = (
     <Badge variant="light">
       {
-        props.paymentList.filter(e => e.ispaymentDone === false).length
+        props.paymentList.filter(
+          (paymentEntry) => !paymentEntry.ispaymentDone
+        ).length
       }
     </Badge>
   );
@@ -123,13 +133,17 @@ function ButtonGroup(props) {
       />{" "}
       <Button
         text="Start Payment "
-        badge={paymentBadge}
+        badge={pendingPaymentsCountBadge}
         variant="primary"
-        buttonClick={startPay}
+        buttonClick={startPayments}
       />{" "}
-      <Button text="Payment Status" variant="primary" buttonClick={checkStatus} />{" "}
+      <Button
+        text="Payment Status"
+        variant="primary"
+        buttonClick={checkStatus}
+      />{" "}
       <Button text="Balance" variant="primary" buttonClick={checkBalance} />{" "}
-      <Button text="Clear data" variant="primary" buttonClick={clearData} />{" "}
+      <Button text="Clear data" variant="primary" buttonClick={clearPaymentsData} />{" "}
     </div>
   );
 }

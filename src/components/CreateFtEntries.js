@@ -63,6 +63,8 @@ function CreateFtEntries(props) {
 
     let ispaymentDone = false;
 
+    let isstatusDone = false;
+
     let uniqueRefrenceNumber = "";
 
     let error = "";
@@ -81,6 +83,7 @@ function CreateFtEntries(props) {
       transferType,
       messageToBene,
       ispaymentDone,
+      isstatusDone,
       uniqueRefrenceNumber,
       error,
       statusError,
