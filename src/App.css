@@ -11,6 +11,9 @@ html, body {
 .App {
   font-family: sans-serif;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .createcenter {

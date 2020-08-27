@@ -10,9 +10,9 @@ import Button from "./Button";
 function CreateFtEntries(props) {
   const [beneficiaryName, setbeneName] = useState("");
   const [beneficiaryAddress, setbeneAddress] = useState("");
-  const [beneficiaryBankIfsc, setbeneIfsc] = useState("HDFC0000001");
+  const [beneficiaryBankIfsc, setbeneIfsc] = useState("");
   const [beneficiaryAccountNumber, setbeneAccountNumber] = useState(
-    "00011020001772"
+    ""
   );
   const [transferAmount, setAmount] = useState("");
   const [transferType, setTransferType] = useState("FT");
@@ -63,11 +63,11 @@ function CreateFtEntries(props) {
 
     let ispaymentDone = false;
 
-    let uniqueRefrenceNumber = "NA";
+    let uniqueRefrenceNumber = "";
 
-    let error = "NA";
+    let error = "";
 
-    let statusError = "NA";
+    let statusError = "";
 
     let status = "";
 
