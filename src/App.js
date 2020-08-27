@@ -9,14 +9,12 @@ import Heading from "./components/HeadingComponent";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-
 function App() {
   const [showCreateEntry, setShowCreateEntry] = useState(false);
   const [paymentList, setPaymentList] = useState([]);
 
   return (
     <div className="App">
-
       <Heading title="Yes Banking Services" />
 
       <ButtonGroup
@@ -42,6 +40,8 @@ function App() {
       <br />
 
       <StatusTable paymentList={paymentList} />
+
+      <br />
     </div>
   );
 }
