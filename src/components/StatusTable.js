@@ -9,7 +9,7 @@ function StatusTable(props) {
     "Unique request number",
     "Name",
     "Amount",
-    "Type"
+    "Type",
     "Unique Refrence Number",
     "Status",
     "Error"
