@@ -9,6 +9,7 @@ function StatusTable(props) {
     "Unique request number",
     "Name",
     "Amount",
+    "Type"
     "Unique Refrence Number",
     "Status",
     "Error"
@@ -21,6 +22,7 @@ function StatusTable(props) {
       <td>{e.uniqueRequestNo}</td>
       <td>{e.beneficiaryName}</td>
       <td>{e.transferAmount}</td>
+      <td>{e.transferType}</td>
       <td>{e.uniqueRefrenceNumber}</td>
       <td>{e.status}</td>
       <td>{e.statusError}</td>
