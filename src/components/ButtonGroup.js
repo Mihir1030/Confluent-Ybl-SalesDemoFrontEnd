@@ -107,11 +107,12 @@ function ButtonGroup(props) {
     }
   };
 
-  const checkBalance = (event) => {
-    console.log("balance");
-  };
+  // const checkBalance = (event) => {
+  //   console.log("balance");
+  // };
 
   const clearPaymentsData = (event) => {
+    props.setPaymentList([]);
     console.log("clear");
   };
 
@@ -143,7 +144,7 @@ function ButtonGroup(props) {
         variant="outline-primary"
         buttonClick={checkStatus}
       />{" "}
-      <Button text="Balance" variant="outline-primary" buttonClick={checkBalance} />{" "}
+      {/* <Button text="Balance" variant="outline-primary" buttonClick={checkBalance} />{" "} */}
       <Button text="Clear data" variant="outline-primary" buttonClick={clearPaymentsData} />{" "}
     </div>
   );
