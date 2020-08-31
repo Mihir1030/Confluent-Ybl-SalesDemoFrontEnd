@@ -31,9 +31,9 @@ function ButtonGroup(props) {
             // check for error response
             if (!response.ok) {
               // get error message from body or default to response status
-              const error =
+              const error = '';
                 // (paymentResponseData && paymentResponseData.message) ||
-                response.status.toString();
+                response.status;
               return Promise.reject(error);
             } else if (paymentResponseData.yestimeout) {
               const error = "timeout";
@@ -62,11 +62,13 @@ function ButtonGroup(props) {
                 "Please try again/ Check if UAT payment server is under maintanance."
               );
               props.setShowAlert(true);
-            } else if (error.includes("NetworkError")) {
-              props.setAlertMessage("Please check internet connection");
-              props.setShowAlert(true);
-              console.error("There was an error!", error);
-            }else{
+            }
+            // } else if (error.includes("NetworkError")) {
+            //   props.setAlertMessage("Please check internet connection");
+            //   props.setShowAlert(true);
+            //   console.error("There was an error!", error);
+            // }
+            else{
               console.error("There was an error!", error);
             }
           });
