@@ -64,10 +64,6 @@ function ButtonGroup(props) {
               props.setShowAlert(true);
             } else{
               console.error("There was an error!", error);
-              if(error.includes("NetworkError")){
-                props.setAlertMessage("Please check internet connection");
-              props.setShowAlert(true);
-              }
             }
           });
       }

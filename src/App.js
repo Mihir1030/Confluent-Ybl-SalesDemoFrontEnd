@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import React, { useState ,lazy} from "react";
 
 import ButtonGroup from "./components/ButtonGroup";
-import CreateEntry from "./components/CreateFtEntries";
+//import CreateEntry from "./components/CreateFtEntries";
 import PaymentTable from "./components/PaymentTable";
 import StatusTable from "./components/StatusTable";
 import Heading from "./components/HeadingComponent";
-import AlertDismissiable from "./components/AlertDismissible"
 
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+
+//import AlertDismissiable from "./components/AlertDismissible"
+
+const CreateEntry = lazy(() => import("./components/CreateFtEntries"));
+const AlertDismissiable = lazy(() => import("./components/AlertDismissible"));
 
 function App() {
   const [showCreateEntry, setShowCreateEntry] = useState(false);
