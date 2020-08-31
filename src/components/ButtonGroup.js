@@ -22,7 +22,7 @@ function ButtonGroup(props) {
           body: JSON.stringify(currentPaymentEntry),
         };
         fetch(
-          "https://yes-sales-team-demo.herokuapp.com/yesapi/pay",
+          "https://yes-sales-team-demo-backend.herokuapp.com/yesapi/pay",
           requestOptions
         )
           .then(async (response) => {
@@ -81,7 +81,7 @@ function ButtonGroup(props) {
           body: JSON.stringify(currentPaymentEntry),
         };
         fetch(
-          "https://yes-sales-team-demo.herokuapp.com/yesapi/status",
+          "https://yes-sales-team-demo-backend.herokuapp.com/yesapi/status",
           requestOptions
         )
           .then(async (response) => {
