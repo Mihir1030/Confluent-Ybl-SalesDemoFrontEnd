@@ -1,4 +1,4 @@
-import React, { useState ,lazy} from "react";
+import React, { useState } from "react";
 
 import ButtonGroup from "./components/ButtonGroup";
 import CreateEntry from "./components/CreateFtEntries";
