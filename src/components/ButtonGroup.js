@@ -31,7 +31,7 @@ function ButtonGroup(props) {
             // check for error response
             if (!response.ok) {
               // get error message from body or default to response status
-              const error = '';
+              const error = 
                 // (paymentResponseData && paymentResponseData.message) ||
                 response.status;
               return Promise.reject(error);
