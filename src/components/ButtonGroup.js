@@ -33,7 +33,7 @@ function ButtonGroup(props) {
               // get error message from body or default to response status
               const error =
                 // (paymentResponseData && paymentResponseData.message) ||
-                response.status;
+                response.status.toString();
               return Promise.reject(error);
             } else if (paymentResponseData.yestimeout) {
               const error = "timeout";
