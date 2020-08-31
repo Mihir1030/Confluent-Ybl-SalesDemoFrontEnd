@@ -29,8 +29,11 @@ function ButtonGroup(props) {
             if (!response.ok) {
               // get error message from body or default to response status
               const error =
-                (paymentResponseData && paymentResponseData.message) ||
+               // (paymentResponseData && paymentResponseData.message) ||
                 response.status;
+              return Promise.reject(error);
+            }else if(paymentResponseData.yestimeout){
+              const error = 'timeout';
               return Promise.reject(error);
             }
 
@@ -52,7 +55,13 @@ function ButtonGroup(props) {
             props.setPaymentList(tempPaymentListWithoutCurrentPaymentEntry);
           })
           .catch((error) => {
-            console.error("There was an error!", error);
+
+            if(error === 'timeout'){
+              props.setShowAlert(true);
+            }else{
+              console.error("There was an error!", error);
+            }
+            
           });
       }
     }
