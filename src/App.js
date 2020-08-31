@@ -15,7 +15,7 @@ function App() {
 
   return (
     <div className="App">
-      <Heading title="Yes Banking Services" />
+      {/* <Heading title="Yes Banking Services" /> */}
 
       <ButtonGroup
         showCreateEntry={showCreateEntry}
