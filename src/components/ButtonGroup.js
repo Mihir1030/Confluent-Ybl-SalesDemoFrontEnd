@@ -62,14 +62,12 @@ function ButtonGroup(props) {
                 "Please try again/ Check if UAT payment server is under maintanance."
               );
               props.setShowAlert(true);
-            }
-            // } else if (error.includes("NetworkError")) {
-            //   props.setAlertMessage("Please check internet connection");
-            //   props.setShowAlert(true);
-            //   console.error("There was an error!", error);
-            // }
-            else{
+            } else{
               console.error("There was an error!", error);
+              if(error.includes("NetworkError")){
+                props.setAlertMessage("Please check internet connection");
+              props.setShowAlert(true);
+              }
             }
           });
       }
