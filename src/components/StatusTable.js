@@ -31,7 +31,7 @@ function StatusTable(props) {
 
   return (
     <div className="center">
-      <Heading title="Status Table" />
+      <Heading title="Status Table" headingStyle="headingComponent" />
 
       <br />
 

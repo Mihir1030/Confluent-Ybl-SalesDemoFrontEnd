@@ -34,7 +34,7 @@ function PaymentTable(props) {
 
   return (
     <div className="center">
-      <Heading title="Payment Table" />
+      <Heading title="Payment Table" headingStyle="headingComponent" />
 
       <br />
 

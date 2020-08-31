@@ -4,7 +4,7 @@ import ButtonGroup from "./components/ButtonGroup";
 import CreateEntry from "./components/CreateFtEntries";
 import PaymentTable from "./components/PaymentTable";
 import StatusTable from "./components/StatusTable";
-// import Heading from "./components/HeadingComponent";
+import Heading from "./components/HeadingComponent";
 
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -15,7 +15,7 @@ function App() {
 
   return (
     <div className="App">
-      {/* <Heading title="Yes Banking Services" /> */}
+      <Heading title="Yes Banking Services" headingStyle="maintitle"/>
 
       <ButtonGroup
         showCreateEntry={showCreateEntry}
