@@ -7,7 +7,7 @@ function AlertDismissible(props) {
       <Alert variant="danger" onClose={() => props.setShowAlert(false)} dismissible>
         <Alert.Heading>Oops! Something went wrong</Alert.Heading>
         <p>
-          Please try after some time/check is UAT server under maintainance.
+          {props.alertMessage}
         </p>
       </Alert>
     );

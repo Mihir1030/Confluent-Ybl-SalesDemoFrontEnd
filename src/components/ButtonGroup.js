@@ -15,7 +15,10 @@ function ButtonGroup(props) {
       if (!currentPaymentEntry.ispaymentDone) {
         const requestOptions = {
           method: "POST",
-          headers: { "Content-Type": "application/json","Access-Control-Allow-Origin": "*" },
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
           body: JSON.stringify(currentPaymentEntry),
         };
         fetch(
@@ -29,46 +32,49 @@ function ButtonGroup(props) {
             if (!response.ok) {
               // get error message from body or default to response status
               const error =
-               // (paymentResponseData && paymentResponseData.message) ||
+                // (paymentResponseData && paymentResponseData.message) ||
                 response.status;
               return Promise.reject(error);
-            }else if(paymentResponseData.yestimeout){
-              const error = 'timeout';
+            } else if (paymentResponseData.yestimeout) {
+              const error = "timeout";
               return Promise.reject(error);
             }
 
             currentPaymentEntry.uniqueRefrenceNumber =
               paymentResponseData.uniqueRefrenceNumber;
-              currentPaymentEntry.error = paymentResponseData.error.includes(
+            currentPaymentEntry.error = paymentResponseData.error.includes(
               "IFSC"
             )
               ? "Incorrect IFSC code"
               : "NA";
-              currentPaymentEntry.ispaymentDone = true;
+            currentPaymentEntry.ispaymentDone = true;
 
             var tempPaymentListWithoutCurrentPaymentEntry = props.paymentList.filter(
               (entry) =>
-                entry.uniqueRequestNo !==
-                currentPaymentEntry.uniqueRequestNo
+                entry.uniqueRequestNo !== currentPaymentEntry.uniqueRequestNo
             );
             tempPaymentListWithoutCurrentPaymentEntry.push(currentPaymentEntry);
             props.setPaymentList(tempPaymentListWithoutCurrentPaymentEntry);
           })
           .catch((error) => {
-
-            if(error === 'timeout'){
+            if (error === "timeout") {
+              props.setAlertMessage(
+                "Please try again/ Check if UAT payment server is under maintanance."
+              );
               props.setShowAlert(true);
+            } else if (error.includes("NetworkError")) {
+              props.setAlertMessage("Please check internet connection");
+              props.setShowAlert(true);
+              console.error("There was an error!", error);
             }else{
               console.error("There was an error!", error);
             }
-            
           });
       }
     }
   };
 
   const checkStatus = (event) => {
-
     const tempPaymentsArray = [...props.paymentList];
 
     for (const currentPaymentEntry of tempPaymentsArray) {
@@ -89,17 +95,13 @@ function ButtonGroup(props) {
             if (!response.ok) {
               // get error message from body or default to response status
               const error =
-                (paymentStatusReponseData &&
-                  paymentStatusReponseData.message) ||
                 response.status;
               return Promise.reject(error);
             }
 
-            currentPaymentEntry.status =
-              paymentStatusReponseData.statuscode;
-              currentPaymentEntry.statusError =
-              paymentStatusReponseData.error;
-              currentPaymentEntry.isstatusDone = true;
+            currentPaymentEntry.status = paymentStatusReponseData.statuscode;
+            currentPaymentEntry.statusError = paymentStatusReponseData.error;
+            currentPaymentEntry.isstatusDone = true;
 
             var tempPaymentListWithoutCurrentEntry = props.paymentList.filter(
               (paymentEntry) =>
@@ -128,9 +130,8 @@ function ButtonGroup(props) {
   const pendingPaymentsCountBadge = (
     <Badge variant="light">
       {
-        props.paymentList.filter(
-          (paymentEntry) => !paymentEntry.ispaymentDone
-        ).length
+        props.paymentList.filter((paymentEntry) => !paymentEntry.ispaymentDone)
+          .length
       }
     </Badge>
   );
@@ -154,7 +155,11 @@ function ButtonGroup(props) {
         buttonClick={checkStatus}
       />{" "}
       {/* <Button text="Balance" variant="outline-primary" buttonClick={checkBalance} />{" "} */}
-      <Button text="Clear data" variant="primary" buttonClick={clearPaymentsData} />{" "}
+      <Button
+        text="Clear data"
+        variant="primary"
+        buttonClick={clearPaymentsData}
+      />{" "}
     </div>
   );
 }

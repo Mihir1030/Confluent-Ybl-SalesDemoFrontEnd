@@ -13,7 +13,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 function App() {
   const [showCreateEntry, setShowCreateEntry] = useState(false);
   const [paymentList, setPaymentList] = useState([]);
-  // const [alertMessage, setAlertMessage] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);
 
   return (
@@ -25,6 +25,7 @@ function App() {
       {showAlert ? (
         <AlertDismissiable
         setShowAlert={setShowAlert}
+        alertMessage={alertMessage}
         />
       ) : null}
 
@@ -36,6 +37,7 @@ function App() {
         paymentList={paymentList}
         setPaymentList={setPaymentList}
         setShowAlert={setShowAlert}
+        setAlertMessage={setAlertMessage}
       />
 
       <br />
