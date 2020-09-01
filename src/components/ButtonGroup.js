@@ -8,11 +8,16 @@ function ButtonGroup(props) {
     props.setShowCreateEntry(!props.showCreateEntry);
   };
 
-  const startPayments = (event) => {
+  const makeRestPostRequest = (
+    restEndpoint,
+    ifCondition,
+    responseProcessing,
+    errorMessage
+  ) => {
     const tempPaymentsArray = [...props.paymentList];
 
     for (const currentPaymentEntry of tempPaymentsArray) {
-      if (!currentPaymentEntry.ispaymentDone) {
+      if (ifCondition(currentPaymentEntry)) {
         const requestOptions = {
           method: "POST",
           headers: {
@@ -21,12 +26,9 @@ function ButtonGroup(props) {
           },
           body: JSON.stringify(currentPaymentEntry),
         };
-        fetch(
-          "https://yes-sales-team-demo-backend.herokuapp.com/yesapi/pay",
-          requestOptions
-        )
+        fetch(restEndpoint, requestOptions)
           .then(async (response) => {
-            const paymentResponseData = await response.json();
+            const responseData = await response.json();
 
             // check for error response
             if (!response.ok) {
@@ -35,18 +37,15 @@ function ButtonGroup(props) {
                 // (paymentResponseData && paymentResponseData.message) ||
                 response.status;
               return Promise.reject(error);
-            } else if (paymentResponseData.yestimeout) {
+            } else if (responseData.yestimeout) {
               const error = "timeout";
               return Promise.reject(error);
             }
 
-            processFetchPaymentResponse(
-              currentPaymentEntry,
-              paymentResponseData
-            );
+            responseProcessing(currentPaymentEntry, responseData);
           })
           .catch((error) => {
-            handleFetchError(error, "this error during payment!:");
+            handleFetchError(error, errorMessage);
           });
       }
     }
@@ -68,42 +67,6 @@ function ButtonGroup(props) {
     );
     tempPaymentListWithoutCurrentPaymentEntry.push(currentPaymentEntry);
     props.setPaymentList(tempPaymentListWithoutCurrentPaymentEntry);
-  };
-
-  const checkStatus = (event) => {
-    const tempPaymentsArray = [...props.paymentList];
-
-    for (const currentPaymentEntry of tempPaymentsArray) {
-      if (currentPaymentEntry.ispaymentDone) {
-        const requestOptions = {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(currentPaymentEntry),
-        };
-        fetch(
-          "https://yes-sales-team-demo-backend.herokuapp.com/yesapi/status",
-          requestOptions
-        )
-          .then(async (response) => {
-            const paymentStatusReponseData = await response.json();
-
-            // check for error response
-            if (!response.ok) {
-              // get error message from body or default to response status
-              const error = response.status;
-              return Promise.reject(error);
-            }
-
-            processFetchStatusResponse(
-              currentPaymentEntry,
-              paymentStatusReponseData
-            );
-          })
-          .catch((error) => {
-            handleFetchError(error, "this error during payment status!:");
-          });
-      }
-    }
   };
 
   const processFetchStatusResponse = (
@@ -158,12 +121,26 @@ function ButtonGroup(props) {
         text="Start Payment "
         badge={pendingPaymentsCountBadge}
         variant="primary"
-        buttonClick={startPayments}
+        buttonClick={() =>
+          makeRestPostRequest(
+            "https://yes-sales-team-demo-backend.herokuapp.com/yesapi/pay",
+            (entry) => !entry.ispaymentDone,
+            processFetchPaymentResponse,
+            "this error during payment!:"
+          )
+        }
       />{" "}
       <Button
         text="Payment Status"
         variant="primary"
-        buttonClick={checkStatus}
+        buttonClick={() =>
+          makeRestPostRequest(
+            "https://yes-sales-team-demo-backend.herokuapp.com/yesapi/status",
+            (entry) => entry.ispaymentDone,
+            processFetchStatusResponse,
+            "this error during payment status!:"
+          )
+        }
       />{" "}
       {/* <Button text="Balance" variant="outline-primary" buttonClick={checkBalance} />{" "} */}
       <Button
