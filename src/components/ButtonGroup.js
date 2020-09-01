@@ -74,7 +74,11 @@ function ButtonGroup(props) {
     paymentStatusReponseData
   ) => {
     currentPaymentEntry.status = paymentStatusReponseData.statuscode;
-    currentPaymentEntry.statusError = paymentStatusReponseData.error;
+    currentPaymentEntry.statusError = paymentStatusReponseData.error.includes(
+      "Request Not Found"
+    )
+      ? "Request Not Found"
+      : paymentStatusReponseData.error;
     currentPaymentEntry.isstatusDone = true;
 
     var tempPaymentListWithoutCurrentEntry = props.paymentList.filter(
