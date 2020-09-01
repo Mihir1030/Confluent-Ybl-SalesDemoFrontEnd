@@ -57,14 +57,7 @@ function ButtonGroup(props) {
             props.setPaymentList(tempPaymentListWithoutCurrentPaymentEntry);
           })
           .catch((error) => {
-            if (error === "timeout") {
-              props.setAlertMessage(
-                "Please try again/ Check if UAT payment server is under maintanance."
-              );
-              props.setShowAlert(true);
-            } else{
-              console.error("There was an error!", error);
-            }
+            handleFetchError(error,'this error during payment!:');
           });
       }
     }
@@ -108,7 +101,7 @@ function ButtonGroup(props) {
             props.setPaymentList(tempPaymentListWithoutCurrentEntry);
           })
           .catch((error) => {
-            console.error("There was an error! in status rest call", error);
+            handleFetchError(error,'this error during payment status!:');
           });
       }
     }
