@@ -1,10 +1,17 @@
-html, body {
+html,
+body {
   height: 100%;
+}
+
+body {
+  background: #4b4b4b;
 }
 
 #root {
   background: #4b4b4b;
-  height: 100vh;
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
 }
 
 .App {
@@ -36,17 +43,16 @@ html, body {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.tableDiv{
+.tableDiv {
   display: block !important;
-   overflow-x: auto !important;
+  overflow-x: auto !important;
 }
 
-.headingComponent{
+.headingComponent {
   color: black;
   /* background-color: rgb(207, 204, 204); */
 }
 
-
-.maintitle{
+.maintitle {
   color: whitesmoke;
 }
