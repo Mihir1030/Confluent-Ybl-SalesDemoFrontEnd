@@ -8,8 +8,8 @@ import InputComponent from "./InputComponent";
 import Button from "./Button";
 
 function CreateFtEntries(props) {
-  const [beneficiaryName, setbeneName] = useState("");
-  const [beneficiaryAddress, setbeneAddress] = useState("");
+  const [beneficiaryName, setbeneName] = useState("Demo name");
+  const [beneficiaryAddress, setbeneAddress] = useState("Demo address");
   const [beneficiaryBankIfsc, setbeneIfsc] = useState("");
   const [beneficiaryAccountNumber, setbeneAccountNumber] = useState("");
   const [transferAmount, setAmount] = useState("");
@@ -60,8 +60,6 @@ function CreateFtEntries(props) {
 
     props.setPaymentList(tempEntryList);
 
-    setbeneName("Demo Name");
-    setbeneAddress("Demo address");
     setbeneIfsc("");
     setbeneAccountNumber("");
     setAmount("");
