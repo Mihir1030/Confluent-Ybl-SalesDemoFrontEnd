@@ -31,7 +31,7 @@ function ButtonGroup(props) {
             // check for error response
             if (!response.ok) {
               // get error message from body or default to response status
-              const error = 
+              const error =
                 // (paymentResponseData && paymentResponseData.message) ||
                 response.status;
               return Promise.reject(error);
@@ -40,27 +40,34 @@ function ButtonGroup(props) {
               return Promise.reject(error);
             }
 
-            currentPaymentEntry.uniqueRefrenceNumber =
-              paymentResponseData.uniqueRefrenceNumber;
-            currentPaymentEntry.error = paymentResponseData.error.includes(
-              "IFSC"
-            )
-              ? "Incorrect IFSC code"
-              : "NA";
-            currentPaymentEntry.ispaymentDone = true;
-
-            var tempPaymentListWithoutCurrentPaymentEntry = props.paymentList.filter(
-              (entry) =>
-                entry.uniqueRequestNo !== currentPaymentEntry.uniqueRequestNo
+            processFetchPaymentResponse(
+              currentPaymentEntry,
+              paymentResponseData
             );
-            tempPaymentListWithoutCurrentPaymentEntry.push(currentPaymentEntry);
-            props.setPaymentList(tempPaymentListWithoutCurrentPaymentEntry);
           })
           .catch((error) => {
-            handleFetchError(error,'this error during payment!:');
+            handleFetchError(error, "this error during payment!:");
           });
       }
     }
+  };
+
+  const processFetchPaymentResponse = (
+    currentPaymentEntry,
+    paymentResponseData
+  ) => {
+    currentPaymentEntry.uniqueRefrenceNumber =
+      paymentResponseData.uniqueRefrenceNumber;
+    currentPaymentEntry.error = paymentResponseData.error.includes("IFSC")
+      ? "Incorrect IFSC code"
+      : "NA";
+    currentPaymentEntry.ispaymentDone = true;
+
+    var tempPaymentListWithoutCurrentPaymentEntry = props.paymentList.filter(
+      (entry) => entry.uniqueRequestNo !== currentPaymentEntry.uniqueRequestNo
+    );
+    tempPaymentListWithoutCurrentPaymentEntry.push(currentPaymentEntry);
+    props.setPaymentList(tempPaymentListWithoutCurrentPaymentEntry);
   };
 
   const checkStatus = (event) => {
@@ -83,42 +90,48 @@ function ButtonGroup(props) {
             // check for error response
             if (!response.ok) {
               // get error message from body or default to response status
-              const error =
-                response.status;
+              const error = response.status;
               return Promise.reject(error);
             }
 
-            currentPaymentEntry.status = paymentStatusReponseData.statuscode;
-            currentPaymentEntry.statusError = paymentStatusReponseData.error;
-            currentPaymentEntry.isstatusDone = true;
-
-            var tempPaymentListWithoutCurrentEntry = props.paymentList.filter(
-              (paymentEntry) =>
-                paymentEntry.uniqueRequestNo !==
-                currentPaymentEntry.uniqueRequestNo
+            processFetchStatusResponse(
+              currentPaymentEntry,
+              paymentStatusReponseData
             );
-            tempPaymentListWithoutCurrentEntry.push(currentPaymentEntry);
-            props.setPaymentList(tempPaymentListWithoutCurrentEntry);
           })
           .catch((error) => {
-            handleFetchError(error,'this error during payment status!:');
+            handleFetchError(error, "this error during payment status!:");
           });
       }
     }
   };
 
-  const handleFetchError = (error,message) =>{
+  const processFetchStatusResponse = (
+    currentPaymentEntry,
+    paymentStatusReponseData
+  ) => {
+    currentPaymentEntry.status = paymentStatusReponseData.statuscode;
+    currentPaymentEntry.statusError = paymentStatusReponseData.error;
+    currentPaymentEntry.isstatusDone = true;
 
+    var tempPaymentListWithoutCurrentEntry = props.paymentList.filter(
+      (paymentEntry) =>
+        paymentEntry.uniqueRequestNo !== currentPaymentEntry.uniqueRequestNo
+    );
+    tempPaymentListWithoutCurrentEntry.push(currentPaymentEntry);
+    props.setPaymentList(tempPaymentListWithoutCurrentEntry);
+  };
+
+  const handleFetchError = (error, message) => {
     if (error === "timeout") {
       props.setAlertMessage(
         "Please try again/ Check if UAT payment server is under maintanance."
       );
       props.setShowAlert(true);
-    } else{
+    } else {
       console.error(message, error);
     }
-
-  }
+  };
 
   const clearPaymentsData = (event) => {
     props.setPaymentList([]);
@@ -137,8 +150,8 @@ function ButtonGroup(props) {
   return (
     <div className="buttonGroupTop">
       <Button
-        text={!props.showCreateEntry?"Create Payment":"close"}
-        variant={!props.showCreateEntry?"primary":"danger"}
+        text={!props.showCreateEntry ? "Create Payment" : " X close"}
+        variant={!props.showCreateEntry ? "primary" : "danger"}
         buttonClick={changeCreateFtEntriesVisibility}
       />{" "}
       <Button
