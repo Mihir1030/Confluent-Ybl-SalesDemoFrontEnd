@@ -60,11 +60,11 @@ function CreateFtEntries(props) {
 
     props.setPaymentList(tempEntryList);
 
-    setbeneName("");
-    setbeneAddress("");
-    setbeneIfsc("");
-    setbeneAccountNumber("");
-    setAmount("");
+    // setbeneName("");
+    // setbeneAddress("");
+    // setbeneIfsc("");
+    // setbeneAccountNumber("");
+    // setAmount("");
   }
 
   function uniqueRequestNumberGenerator(length) {
