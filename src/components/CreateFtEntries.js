@@ -17,6 +17,15 @@ function CreateFtEntries(props) {
   const [transferAmount, setAmount] = useState("");
   const [transferType, setTransferType] = useState("FT");
 
+  const onChangeFunction = (event,inputState,setInputState,regexPattern) => {
+    const validationPattern = regexPattern;
+    if (event.target.value === "" || validationPattern.test(event.target.value)) {
+      setInputState(event.target.value);
+    } else {
+      setInputState(inputState);
+    }
+  }
+
   function onChangeAmount(e) {
     const re = /^[0-9.\b]+$/;
     if (e.target.value === "" || re.test(e.target.value)) {

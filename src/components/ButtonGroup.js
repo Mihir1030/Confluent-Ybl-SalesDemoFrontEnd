@@ -135,8 +135,8 @@ function ButtonGroup(props) {
   return (
     <div className="buttonGroupTop">
       <Button
-        text="Create Payment"
-        variant="primary"
+        text={!props.showCreateEntry?"Create Payment":"close"}
+        variant={!props.showCreateEntry?"primary":"danger"}
         buttonClick={changeCreateFtEntriesVisibility}
       />{" "}
       <Button
@@ -153,7 +153,7 @@ function ButtonGroup(props) {
       {/* <Button text="Balance" variant="outline-primary" buttonClick={checkBalance} />{" "} */}
       <Button
         text="Clear data"
-        variant="primary"
+        variant="danger"
         buttonClick={clearPaymentsData}
       />{" "}
     </div>
