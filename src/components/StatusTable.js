@@ -4,7 +4,7 @@ import GridComponent from "./GridComponent";
 import Heading from "./HeadingComponent";
 
 function StatusTable(props) {
-
+  console.log("status table run");
   const heading = [
     "Unique request number",
     "Name",
@@ -44,4 +44,13 @@ function StatusTable(props) {
 
 }
 
-export default StatusTable;
+function areEqual(prevProps, nextProps) {
+  /*
+  return true if passing nextProps to render would return
+  the same result as passing prevProps to render,
+  otherwise return false
+  */
+ return prevProps.paymentList===nextProps.paymentList?true:false;
+}
+
+export default React.memo(StatusTable,areEqual);

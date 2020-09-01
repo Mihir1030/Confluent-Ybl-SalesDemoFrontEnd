@@ -4,7 +4,7 @@ import GridComponent from "./GridComponent";
 import Heading from "./HeadingComponent";
 
 function PaymentTable(props) {
-  console.log("table run");
+  console.log("pay table run");
   const heading = [
     "Unique request number",
     "Name",
@@ -46,4 +46,13 @@ function PaymentTable(props) {
   );
 }
 
-export default PaymentTable;
+function areEqual(prevProps, nextProps) {
+  /*
+  return true if passing nextProps to render would return
+  the same result as passing prevProps to render,
+  otherwise return false
+  */
+ return prevProps.paymentList===nextProps.paymentList?true:false;
+}
+
+export default React.memo(PaymentTable,areEqual);
