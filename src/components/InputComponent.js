@@ -5,7 +5,11 @@ import BootStrapCol from "react-bootstrap/Col";
 
 function InputComponent(props) {
   return (
-    <BootStrapForm.Group as={BootStrapCol} xs={props.xs} controlId={props.controlId}>
+    <BootStrapForm.Group
+      as={BootStrapCol}
+      xs={props.xs}
+      controlId={props.controlId}
+    >
       <BootStrapForm.Label>{props.label}</BootStrapForm.Label>
       <BootStrapForm.Control
         type={props.type}

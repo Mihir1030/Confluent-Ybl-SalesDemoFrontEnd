@@ -12,7 +12,7 @@ function StatusTable(props) {
     "Type",
     "Unique Refrence Number",
     "Status",
-    "Error"
+    "Error",
   ];
 
   const tableHeadingList = heading.map((h, index) => <th key={index}>{h}</th>);
@@ -41,7 +41,6 @@ function StatusTable(props) {
       />
     </div>
   );
-
 }
 
 function areEqual(prevProps, nextProps) {
@@ -50,7 +49,7 @@ function areEqual(prevProps, nextProps) {
   the same result as passing prevProps to render,
   otherwise return false
   */
- return prevProps.paymentList===nextProps.paymentList?true:false;
+  return prevProps.paymentList === nextProps.paymentList ? true : false;
 }
 
-export default React.memo(StatusTable,areEqual);
+export default React.memo(StatusTable, areEqual);
