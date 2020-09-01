@@ -2,16 +2,13 @@ import React, { useState } from "react";
 
 import ButtonGroup from "./components/ButtonGroup";
 import CreateEntry from "./components/CreateFtEntries";
-import AlertDismissiable from "./components/AlertDismissible"
+import AlertDismissiable from "./components/AlertDismissible";
 import PaymentTable from "./components/PaymentTable";
 import StatusTable from "./components/StatusTable";
 import Heading from "./components/HeadingComponent";
 
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-
-
 
 function App() {
   const [showCreateEntry, setShowCreateEntry] = useState(false);
@@ -21,18 +18,18 @@ function App() {
 
   return (
     <div className="App">
-      <Heading title="Yes Banking Services" headingStyle="maintitle"/>
-
       <br />
+
+      <Heading title="Yes Banking Services" headingStyle="maintitle" />
 
       {showAlert ? (
         <AlertDismissiable
-        setShowAlert={setShowAlert}
-        alertMessage={alertMessage}
+          setShowAlert={setShowAlert}
+          alertMessage={alertMessage}
         />
       ) : null}
 
-<br />
+      <br />
 
       <ButtonGroup
         showCreateEntry={showCreateEntry}
