@@ -60,8 +60,8 @@ function CreateFtEntries(props) {
 
     props.setPaymentList(tempEntryList);
 
-    setbeneName("");
-    setbeneAddress("");
+    setbeneName("Demo Name");
+    setbeneAddress("Demo address");
     setbeneIfsc("");
     setbeneAccountNumber("");
     setAmount("");
