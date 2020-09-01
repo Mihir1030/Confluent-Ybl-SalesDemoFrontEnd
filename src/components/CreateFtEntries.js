@@ -11,92 +11,47 @@ function CreateFtEntries(props) {
   const [beneficiaryName, setbeneName] = useState("");
   const [beneficiaryAddress, setbeneAddress] = useState("");
   const [beneficiaryBankIfsc, setbeneIfsc] = useState("");
-  const [beneficiaryAccountNumber, setbeneAccountNumber] = useState(
-    ""
-  );
+  const [beneficiaryAccountNumber, setbeneAccountNumber] = useState("");
   const [transferAmount, setAmount] = useState("");
   const [transferType, setTransferType] = useState("FT");
 
-  const onChangeFunction = (event,inputState,setInputState,regexPattern) => {
+  const onChangeFunction = (event, inputState, setInputState, regexPattern) => {
     const validationPattern = regexPattern;
-    if (event.target.value === "" || validationPattern.test(event.target.value)) {
+    if (
+      event.target.value === "" ||
+      validationPattern.test(event.target.value)
+    ) {
       setInputState(event.target.value);
     } else {
       setInputState(inputState);
     }
-  }
+  };
 
-  function onChangeAmount(e) {
-    const re = /^[0-9.\b]+$/;
-    if (e.target.value === "" || re.test(e.target.value)) {
-      setAmount(e.target.value);
-    } else {
-      setAmount(transferAmount);
-    }
-  }
-
-  function onChangeAccountNumber(e) {
-    const re = /^[0-9\b]+$/;
-    if (e.target.value === "" || re.test(e.target.value)) {
-      setbeneAccountNumber(e.target.value);
-    } else {
-      setbeneAccountNumber(beneficiaryAccountNumber);
-    }
-  }
-
-  function onChangeBeneIfsc(e) {
-    const re = /^[A-Z0-9\b]+$/;
-    if (e.target.value === "" || re.test(e.target.value)) {
-      setbeneIfsc(e.target.value);
-    } else {
-      setbeneIfsc(beneficiaryBankIfsc);
-    }
-  }
-
-  function onChangeBeneName(e) {
-    setbeneName(e.target.value);
-  }
-
-  function onChangeBeneAddress(e) {
-    setbeneAddress(e.target.value);
-  }
+  const regex_Amount = /^[0-9.\b]+$/;
+  const regex_AccountNo_numericOnly = /^[0-9\b]+$/;
+  const regexIFSC_alphanumeric = /^[A-Z0-9\b]+$/;
+  const regexOnlyLetters = /^[a-zA-Z' ']+$/;
 
   function onChangeTransferType(e) {
     setTransferType(e.target.value);
   }
 
   function updateEntryList(e) {
-    let uniqueRequestNo = uniqueRequestNumberGenerator(10);
-
-    let messageToBene = "demo payment";
-
-    let ispaymentDone = false;
-
-    let isstatusDone = false;
-
-    let uniqueRefrenceNumber = "";
-
-    let error = "";
-
-    let statusError = "";
-
-    let status = "";
-
     let paymentObject = {
-      uniqueRequestNo,
+      uniqueRequestNo: uniqueRequestNumberGenerator(10),
       beneficiaryName,
       beneficiaryAddress,
       transferAmount,
       beneficiaryAccountNumber,
       beneficiaryBankIfsc,
       transferType,
-      messageToBene,
-      ispaymentDone,
-      isstatusDone,
-      uniqueRefrenceNumber,
-      error,
-      statusError,
-      status,
+      messageToBene: "demo payment",
+      ispaymentDone: false,
+      isstatusDone: false,
+      uniqueRefrenceNumber: "",
+      error: "",
+      statusError: "",
+      status: "",
     };
 
     const tempEntryList = [...props.paymentList];
@@ -134,7 +89,14 @@ function CreateFtEntries(props) {
               label="Name"
               type="text"
               value={beneficiaryName}
-              onchangeFun={onChangeBeneName}
+              onchangeFun={(event) =>
+                onChangeFunction(
+                  event,
+                  beneficiaryName,
+                  setbeneName,
+                  regexOnlyLetters
+                )
+              }
               placeholder="Beneficiary Name"
             />
             <InputComponent
@@ -143,7 +105,14 @@ function CreateFtEntries(props) {
               label="Address"
               type="text"
               value={beneficiaryAddress}
-              onchangeFun={onChangeBeneAddress}
+              onchangeFun={(event) =>
+                onChangeFunction(
+                  event,
+                  beneficiaryAddress,
+                  setbeneAddress,
+                  regexOnlyLetters
+                )
+              }
               placeholder="Beneficiary Address"
             />
             <InputComponent
@@ -152,7 +121,14 @@ function CreateFtEntries(props) {
               label="IFSC"
               type="text"
               value={beneficiaryBankIfsc}
-              onchangeFun={onChangeBeneIfsc}
+              onchangeFun={(event) =>
+                onChangeFunction(
+                  event,
+                  beneficiaryBankIfsc,
+                  setbeneIfsc,
+                  regexIFSC_alphanumeric
+                )
+              }
               placeholder="Beneficiary Bank IFSC"
             />
           </BootStrapForm.Row>
@@ -163,7 +139,14 @@ function CreateFtEntries(props) {
               label="Account No"
               type="text"
               value={beneficiaryAccountNumber}
-              onchangeFun={onChangeAccountNumber}
+              onchangeFun={(event) =>
+                onChangeFunction(
+                  event,
+                  beneficiaryAccountNumber,
+                  setbeneAccountNumber,
+                  regex_AccountNo_numericOnly
+                )
+              }
               placeholder="Beneficiary Bank Account"
             />
             <InputComponent
@@ -172,7 +155,9 @@ function CreateFtEntries(props) {
               label="Amount"
               type="text"
               value={transferAmount}
-              onchangeFun={onChangeAmount}
+              onchangeFun={(event) =>
+                onChangeFunction(event, transferAmount, setAmount, regex_Amount)
+              }
               placeholder="Amount"
             />
             <BootStrapForm.Group
@@ -202,7 +187,6 @@ function CreateFtEntries(props) {
           </BootStrapForm.Group>
         </BootStrapForm>
       </div>
-      
     </div>
   );
 }

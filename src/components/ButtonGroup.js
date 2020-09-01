@@ -114,9 +114,18 @@ function ButtonGroup(props) {
     }
   };
 
-  // const checkBalance = (event) => {
-  //   console.log("balance");
-  // };
+  const handleFetchError = (error,message) =>{
+
+    if (error === "timeout") {
+      props.setAlertMessage(
+        "Please try again/ Check if UAT payment server is under maintanance."
+      );
+      props.setShowAlert(true);
+    } else{
+      console.error(message, error);
+    }
+
+  }
 
   const clearPaymentsData = (event) => {
     props.setPaymentList([]);
