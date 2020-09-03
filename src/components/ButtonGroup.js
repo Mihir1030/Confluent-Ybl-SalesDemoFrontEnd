@@ -74,6 +74,7 @@ function ButtonGroup(props) {
     paymentStatusReponseData
   ) => {
     currentPaymentEntry.status = paymentStatusReponseData.statuscode;
+    currentPaymentEntry.bankRefrenceNumber = paymentStatusReponseData.bankRefrenceNumber;
     currentPaymentEntry.statusError = paymentStatusReponseData.error.includes(
       "Request Not Found"
     )

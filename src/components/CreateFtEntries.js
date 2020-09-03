@@ -49,6 +49,7 @@ function CreateFtEntries(props) {
       ispaymentDone: false,
       isstatusDone: false,
       uniqueRefrenceNumber: "",
+      bankRefrenceNumber:"",
       error: "",
       statusError: "",
       status: "",
