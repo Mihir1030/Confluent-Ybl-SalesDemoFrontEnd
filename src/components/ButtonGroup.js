@@ -74,7 +74,8 @@ function ButtonGroup(props) {
     paymentStatusReponseData
   ) => {
     currentPaymentEntry.status = paymentStatusReponseData.statuscode;
-    currentPaymentEntry.bankRefrenceNumber = paymentStatusReponseData.bankRefrenceNumber;
+    currentPaymentEntry.bankRefrenceNumber =
+      paymentStatusReponseData.bankRefrenceNumber;
     currentPaymentEntry.statusError = paymentStatusReponseData.error.includes(
       "Request Not Found"
     )
@@ -121,6 +122,14 @@ function ButtonGroup(props) {
         text={!props.showCreateEntry ? "Create Payment" : " X close"}
         variant={!props.showCreateEntry ? "primary" : "danger"}
         buttonClick={changeCreateFtEntriesVisibility}
+        popoverTitle="Create Payments"
+        popoverContent={
+          <p>
+            Create dummy payments for ERP. These fileds are for demo
+            presentation. Actual payment request will have more field.
+          </p>
+        }
+        popoverPlacement="left"
       />{" "}
       <Button
         text="Start Payment "
@@ -134,6 +143,15 @@ function ButtonGroup(props) {
             "this error during payment!:"
           )
         }
+        popoverTitle="Send Payments"
+        popoverContent={
+          <p>
+            On click Payments will be sent to Yes Bank server for processing
+            over HTTPS connection.After processing the payments bank will send
+            response, which will be updated in Payments table.
+          </p>
+        }
+        popoverPlacement="bottom"
       />{" "}
       <Button
         text="Payment Status"
@@ -146,12 +164,27 @@ function ButtonGroup(props) {
             "this error during payment status!:"
           )
         }
+        popoverTitle="Get Payments Status"
+        popoverContent={
+          <p>
+            Dummy ERP sends the Unique Request Numbers to the bank and gets
+            payment status in response. Which will be updated in satus table.
+          </p>
+        }
+        popoverPlacement="bottom"
       />{" "}
       {/* <Button text="Balance" variant="outline-primary" buttonClick={checkBalance} />{" "} */}
       <Button
         text="Clear data"
         variant="danger"
         buttonClick={clearPaymentsData}
+        popoverTitle="Clear data"
+        popoverContent={
+          <p>
+            Delete all payment dta from dummy ERP. Once done, cannot be reversed
+          </p>
+        }
+        popoverPlacement="bottom"
       />{" "}
     </div>
   );
