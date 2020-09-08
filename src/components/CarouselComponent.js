@@ -43,7 +43,7 @@ function CarouselComponent(props) {
       </Carousel>
       <br />
       <Button
-        text="Open Dummy ERP"
+        text="Open Demo ERP"
         variant="success"
         buttonClick={enterERP}
         popoverTitle="Demo ERP"
