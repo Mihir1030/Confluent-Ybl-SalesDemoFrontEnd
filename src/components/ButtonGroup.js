@@ -179,11 +179,7 @@ function ButtonGroup(props) {
         variant="danger"
         buttonClick={clearPaymentsData}
         popoverTitle="Clear data"
-        popoverContent={
-          <p>
-            Delete all payment dta from demo ERP.
-          </p>
-        }
+        popoverContent={<p>Delete all payment dta from demo ERP.</p>}
         popoverPlacement="right"
       />{" "}
     </div>

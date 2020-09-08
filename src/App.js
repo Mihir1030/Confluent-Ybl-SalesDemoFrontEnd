@@ -8,7 +8,7 @@ import StatusTable from "./components/StatusTable";
 import Heading from "./components/HeadingComponent";
 import LandingCmponent from "./components/LandingComponent";
 
-import Image from "react-bootstrap/Image"
+import Image from "react-bootstrap/Image";
 
 import yesbanner from "./RESOURCES/logo.jpg";
 
@@ -25,16 +25,15 @@ function App() {
 
   return (
     <div className="App">
-
-      {showLandingComponent?
-      <LandingCmponent
-        showLandingComponent={showLandingComponent}
-        setshowLandingComponent={setshowLandingComponent}
-      />:null
-      }
-      <br/>
+      {showLandingComponent ? (
+        <LandingCmponent
+          showLandingComponent={showLandingComponent}
+          setshowLandingComponent={setshowLandingComponent}
+        />
+      ) : null}
+      <br />
       <Image src={yesbanner} rounded />
-      
+
       <br />
 
       <Heading title="API Banking Services" headingStyle="maintitle" />

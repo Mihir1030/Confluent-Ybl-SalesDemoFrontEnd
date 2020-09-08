@@ -1,15 +1,15 @@
 import React from "react";
 
-import CarouselComponent from "./CarouselComponent"
+import CarouselComponent from "./CarouselComponent";
 
 function LandingComponent(props) {
   return (
-  <div className="landing">
+    <div className="landing">
       <CarouselComponent
-      ishidden={props.showLandingComponent}
-      setHide={props.setshowLandingComponent}
+        ishidden={props.showLandingComponent}
+        setHide={props.setshowLandingComponent}
       />
-  </div>
-  )
+    </div>
+  );
 }
 export default LandingComponent;

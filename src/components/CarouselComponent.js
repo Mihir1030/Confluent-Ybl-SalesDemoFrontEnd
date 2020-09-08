@@ -33,7 +33,7 @@ function CarouselComponent(props) {
           <img className="d-block w-100" src={yes} alt="Third slide" />
 
           <Carousel.Caption>
-          <div className="caption">
+            <div className="caption">
               <h3 style={style}>Get Status API</h3>
               <p style={style}>Get payment status in one click</p>
               <p style={style}></p>

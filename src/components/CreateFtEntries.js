@@ -49,7 +49,7 @@ function CreateFtEntries(props) {
       ispaymentDone: false,
       isstatusDone: false,
       uniqueRefrenceNumber: "",
-      bankRefrenceNumber:"",
+      bankRefrenceNumber: "",
       error: "",
       statusError: "",
       status: "",
@@ -183,12 +183,8 @@ function CreateFtEntries(props) {
               variant="outline-success"
               buttonClick={updateEntryList}
               popoverTitle="Create Entry"
-        popoverContent={
-          <p>
-            Add the payment data to Payment Table
-          </p>
-        }
-        popoverPlacement="bottom"
+              popoverContent={<p>Add the payment data to Payment Table</p>}
+              popoverPlacement="bottom"
             />{" "}
           </BootStrapForm.Group>
         </BootStrapForm>
