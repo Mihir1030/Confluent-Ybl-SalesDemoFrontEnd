@@ -3,7 +3,7 @@ import React from "react";
 function HeadingComponent(props) {
   return (
     <div className={props.headingStyle}>
-      <h2>{props.title}</h2>
+      <h3>{props.title}</h3>
     </div>
   );
 }

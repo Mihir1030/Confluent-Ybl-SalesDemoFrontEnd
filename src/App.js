@@ -8,6 +8,10 @@ import StatusTable from "./components/StatusTable";
 import Heading from "./components/HeadingComponent";
 import LandingCmponent from "./components/LandingComponent";
 
+import Image from "react-bootstrap/Image"
+
+import yesbanner from "./RESOURCES/logo.jpg";
+
 import "./components/landingComponent.css";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -28,10 +32,12 @@ function App() {
         setshowLandingComponent={setshowLandingComponent}
       />:null
       }
+      <br/>
+      <Image src={yesbanner} rounded />
       
       <br />
 
-      <Heading title="Yes Banking Services" headingStyle="maintitle" />
+      <Heading title="API Banking Services" headingStyle="maintitle" />
 
       {showAlert ? (
         <AlertDismissiable

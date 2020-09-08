@@ -46,7 +46,7 @@ function CarouselComponent(props) {
         text="Open Dummy ERP"
         variant="success"
         buttonClick={enterERP}
-        popoverTitle="Dummy ERP"
+        popoverTitle="Demo ERP"
         popoverContent={
           <p>
             This ERP is for presentation purpose. Client ERP can be different.

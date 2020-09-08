@@ -125,7 +125,7 @@ function ButtonGroup(props) {
         popoverTitle="Create Payments"
         popoverContent={
           <p>
-            Create dummy payments for ERP. These fileds are for demo
+            Create demo payments for ERP. These fileds are for demo
             presentation. Actual payment request will have more field.
           </p>
         }
@@ -167,7 +167,7 @@ function ButtonGroup(props) {
         popoverTitle="Get Payments Status"
         popoverContent={
           <p>
-            Dummy ERP sends the Unique Request Numbers to the bank and gets
+            Demo ERP sends the Unique Request Numbers to the bank and gets
             payment status in response. Which will be updated in satus table.
           </p>
         }
@@ -181,7 +181,7 @@ function ButtonGroup(props) {
         popoverTitle="Clear data"
         popoverContent={
           <p>
-            Delete all payment dta from dummy ERP.
+            Delete all payment dta from demo ERP.
           </p>
         }
         popoverPlacement="right"
