@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 
 import BootStrapForm from "react-bootstrap/Form";
 import BootStrapCol from "react-bootstrap/Col";
+
+import classNames from "classnames";
 
 import Heading from "./HeadingComponent";
 import InputComponent from "./InputComponent";
@@ -27,17 +30,26 @@ function CreateFtEntries(props) {
     }
   };
 
-  const regex_Amount = /^[0-9.\b]+$/;
-  const regex_AccountNo_numericOnly = /^[0-9\b]+$/;
-  const regexIFSC_alphanumeric = /^[A-Z0-9\b]+$/;
+  const regexAmount = /^[0-9.\b]+$/;
+  const regexAccountNumberNumericOnly = /^[0-9\b]+$/;
+  const regexIfscAlphanumeric = /^[A-Z0-9\b]+$/;
   const regexOnlyLetters = /^[a-zA-Z' ']+$/;
 
   function onChangeTransferType(e) {
     setTransferType(e.target.value);
   }
 
-  function updateEntryList(e) {
-    let paymentObject = {
+  function uniqueRequestNumberGenerator(length) {
+    const chars =
+      "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let result = "";
+    for (let i = length; i > 0; i -= 1)
+      result += chars[Math.floor(Math.random() * chars.length)];
+    return result;
+  }
+
+  function updateEntryList() {
+    const paymentObject = {
       uniqueRequestNo: uniqueRequestNumberGenerator(10),
       beneficiaryName,
       beneficiaryAddress,
@@ -66,24 +78,20 @@ function CreateFtEntries(props) {
     setAmount("");
   }
 
-  function uniqueRequestNumberGenerator(length) {
-    const chars =
-      "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    let result = "";
-    for (let i = length; i > 0; --i)
-      result += chars[Math.floor(Math.random() * chars.length)];
-    return result;
-  }
+  // const faddingAnimation = () => {
+
+  //   return props.fadein?'fade' : 'fadeOut';
+  // }
 
   return (
-    <div className="createcenter">
+    <div className={classNames("createcenter")}>
       <Heading title="Create Payment Entries" />
 
       <div>
         <BootStrapForm>
           <BootStrapForm.Row>
             <InputComponent
-              xs={"auto"}
+              xs="auto"
               controlId="formName"
               label="Name"
               type="text"
@@ -115,7 +123,7 @@ function CreateFtEntries(props) {
               placeholder="Beneficiary Address"
             />
             <InputComponent
-              xs={"auto"}
+              xs="auto"
               controlId="formIfsc"
               label="IFSC"
               type="text"
@@ -125,7 +133,7 @@ function CreateFtEntries(props) {
                   event,
                   beneficiaryBankIfsc,
                   setbeneIfsc,
-                  regexIFSC_alphanumeric
+                  regexIfscAlphanumeric
                 )
               }
               placeholder="Beneficiary Bank IFSC"
@@ -143,7 +151,7 @@ function CreateFtEntries(props) {
                   event,
                   beneficiaryAccountNumber,
                   setbeneAccountNumber,
-                  regex_AccountNo_numericOnly
+                  regexAccountNumberNumericOnly
                 )
               }
               placeholder="Beneficiary Bank Account"
@@ -155,7 +163,7 @@ function CreateFtEntries(props) {
               type="text"
               value={transferAmount}
               onchangeFun={(event) =>
-                onChangeFunction(event, transferAmount, setAmount, regex_Amount)
+                onChangeFunction(event, transferAmount, setAmount, regexAmount)
               }
               placeholder="Amount"
             />
@@ -192,5 +200,11 @@ function CreateFtEntries(props) {
     </div>
   );
 }
+
+CreateFtEntries.propTypes = {
+  paymentList: PropTypes.arrayOf(PropTypes.object).isRequired,
+  setPaymentList: PropTypes.func.isRequired,
+  // fadein:PropTypes.bool.isRequired
+};
 
 export default CreateFtEntries;
