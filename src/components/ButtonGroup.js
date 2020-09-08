@@ -22,9 +22,9 @@ function ButtonGroup(props) {
     entryForUpdate.ispaymentDone = true;
 
     const tempPaymentListWithoutCurrentPaymentEntry = props.paymentList.filter(
-      (entry) => entry.uniqueRequestNo !== currentPaymentEntry.uniqueRequestNo
+      (entry) => entry.uniqueRequestNo !== entryForUpdate.uniqueRequestNo
     );
-    tempPaymentListWithoutCurrentPaymentEntry.push(currentPaymentEntry);
+    tempPaymentListWithoutCurrentPaymentEntry.push(entryForUpdate);
     props.setPaymentList(tempPaymentListWithoutCurrentPaymentEntry);
   };
 
@@ -45,9 +45,9 @@ function ButtonGroup(props) {
 
     const tempPaymentListWithoutCurrentEntry = props.paymentList.filter(
       (paymentEntry) =>
-        paymentEntry.uniqueRequestNo !== currentPaymentEntry.uniqueRequestNo
+        paymentEntry.uniqueRequestNo !== entryForUpdate.uniqueRequestNo
     );
-    tempPaymentListWithoutCurrentEntry.push(currentPaymentEntry);
+    tempPaymentListWithoutCurrentEntry.push(entryForUpdate);
     props.setPaymentList(tempPaymentListWithoutCurrentEntry);
   };
 
@@ -98,7 +98,9 @@ function ButtonGroup(props) {
           const error = "timeout";
           return Promise.reject(error);
         }
-        return Promise.resolve(responseData);
+        const result = responseData;
+
+        return Promise.resolve(result);
       })
       .then(
         (result) => responseProcessing(entry, result),
