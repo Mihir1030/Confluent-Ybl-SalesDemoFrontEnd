@@ -181,10 +181,10 @@ function ButtonGroup(props) {
         popoverTitle="Clear data"
         popoverContent={
           <p>
-            Delete all payment dta from dummy ERP. Once done, cannot be reversed
+            Delete all payment dta from dummy ERP.
           </p>
         }
-        popoverPlacement="bottom"
+        popoverPlacement="right"
       />{" "}
     </div>
   );

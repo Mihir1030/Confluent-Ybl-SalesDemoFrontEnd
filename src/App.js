@@ -6,7 +6,9 @@ import AlertDismissiable from "./components/AlertDismissible";
 import PaymentTable from "./components/PaymentTable";
 import StatusTable from "./components/StatusTable";
 import Heading from "./components/HeadingComponent";
+import LandingCmponent from "./components/LandingComponent";
 
+import "./components/landingComponent.css";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -15,9 +17,18 @@ function App() {
   const [paymentList, setPaymentList] = useState([]);
   const [alertMessage, setAlertMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);
+  const [showLandingComponent, setshowLandingComponent] = useState(true);
 
   return (
     <div className="App">
+
+      {showLandingComponent?
+      <LandingCmponent
+        showLandingComponent={showLandingComponent}
+        setshowLandingComponent={setshowLandingComponent}
+      />:null
+      }
+      
       <br />
 
       <Heading title="Yes Banking Services" headingStyle="maintitle" />

@@ -182,6 +182,13 @@ function CreateFtEntries(props) {
               text="Add entry"
               variant="outline-success"
               buttonClick={updateEntryList}
+              popoverTitle="Create Entry"
+        popoverContent={
+          <p>
+            Add the payment data to Payment Table
+          </p>
+        }
+        popoverPlacement="bottom"
             />{" "}
           </BootStrapForm.Group>
         </BootStrapForm>

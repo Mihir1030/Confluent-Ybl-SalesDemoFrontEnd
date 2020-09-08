@@ -1,0 +1,21 @@
+.landing{ /* Hidden by default */
+    display: flex;
+    justify-content: center;
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(163, 160, 160, 0.836); /* Black w/ opacity */
+  }
+
+  .carouselHolder{
+    margin: auto;
+    width: 50%;
+  }
+
+  .caption{
+    background-color: rgba(163, 160, 160, 0.836);
+  }
+  
