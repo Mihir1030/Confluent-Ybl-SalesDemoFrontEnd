@@ -1,68 +1,27 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import Badge from "react-bootstrap/Badge";
 import Button from "./Button";
 
 function ButtonGroup(props) {
-  const changeCreateFtEntriesVisibility = (event) => {
+  const changeCreateFtEntriesVisibility = () => {
     props.setShowCreateEntry(!props.showCreateEntry);
-  };
-
-  const makeRestPostRequest = (
-    restEndpoint,
-    ifCondition,
-    responseProcessing,
-    errorMessage
-  ) => {
-    const tempPaymentsArray = [...props.paymentList];
-
-    for (const currentPaymentEntry of tempPaymentsArray) {
-      if (ifCondition(currentPaymentEntry)) {
-        const requestOptions = {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-          body: JSON.stringify(currentPaymentEntry),
-        };
-        fetch(restEndpoint, requestOptions)
-          .then(async (response) => {
-            const responseData = await response.json();
-
-            // check for error response
-            if (!response.ok) {
-              // get error message from body or default to response status
-              const error =
-                // (paymentResponseData && paymentResponseData.message) ||
-                response.status;
-              return Promise.reject(error);
-            } else if (responseData.yestimeout) {
-              const error = "timeout";
-              return Promise.reject(error);
-            }
-
-            responseProcessing(currentPaymentEntry, responseData);
-          })
-          .catch((error) => {
-            handleFetchError(error, errorMessage);
-          });
-      }
-    }
   };
 
   const processFetchPaymentResponse = (
     currentPaymentEntry,
     paymentResponseData
   ) => {
-    currentPaymentEntry.uniqueRefrenceNumber =
+    const entryForUpdate = { ...currentPaymentEntry };
+    entryForUpdate.uniqueRefrenceNumber =
       paymentResponseData.uniqueRefrenceNumber;
-    currentPaymentEntry.error = paymentResponseData.error.includes("IFSC")
+    entryForUpdate.error = paymentResponseData.error.includes("IFSC")
       ? "Incorrect IFSC code"
       : "NA";
-    currentPaymentEntry.ispaymentDone = true;
+    entryForUpdate.ispaymentDone = true;
 
-    var tempPaymentListWithoutCurrentPaymentEntry = props.paymentList.filter(
+    const tempPaymentListWithoutCurrentPaymentEntry = props.paymentList.filter(
       (entry) => entry.uniqueRequestNo !== currentPaymentEntry.uniqueRequestNo
     );
     tempPaymentListWithoutCurrentPaymentEntry.push(currentPaymentEntry);
@@ -73,17 +32,18 @@ function ButtonGroup(props) {
     currentPaymentEntry,
     paymentStatusReponseData
   ) => {
-    currentPaymentEntry.status = paymentStatusReponseData.statuscode;
-    currentPaymentEntry.bankRefrenceNumber =
+    const entryForUpdate = { ...currentPaymentEntry };
+    entryForUpdate.status = paymentStatusReponseData.statuscode;
+    entryForUpdate.bankRefrenceNumber =
       paymentStatusReponseData.bankRefrenceNumber;
-    currentPaymentEntry.statusError = paymentStatusReponseData.error.includes(
+    entryForUpdate.statusError = paymentStatusReponseData.error.includes(
       "Request Not Found"
     )
       ? "Request Not Found"
       : paymentStatusReponseData.error;
-    currentPaymentEntry.isstatusDone = true;
+    entryForUpdate.isstatusDone = true;
 
-    var tempPaymentListWithoutCurrentEntry = props.paymentList.filter(
+    const tempPaymentListWithoutCurrentEntry = props.paymentList.filter(
       (paymentEntry) =>
         paymentEntry.uniqueRequestNo !== currentPaymentEntry.uniqueRequestNo
     );
@@ -102,33 +62,110 @@ function ButtonGroup(props) {
     }
   };
 
-  const clearPaymentsData = (event) => {
-    props.setPaymentList([]);
-    console.log("clear");
+  const getFetchRequestOptionsObject = (requestBody) => {
+    const requestBodyToStringfiy = { ...requestBody };
+    return {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(requestBodyToStringfiy),
+    };
   };
 
+  const initiateFetchRequest = (
+    entryToProcess,
+    restApiEndpoint,
+    responseProcessing,
+    errorMessage
+  ) => {
+    const entry = entryToProcess;
+    const requestOptions = getFetchRequestOptionsObject(entry);
+    fetch(restApiEndpoint, requestOptions)
+      .then(async (response) => {
+        const responseData = await response.json();
+
+        // check for error response
+        if (!response.ok) {
+          // get error message from body or default to response status
+          const error =
+            // (paymentResponseData && paymentResponseData.message) ||
+            response.status;
+          return Promise.reject(error);
+        }
+        if (responseData.yestimeout) {
+          const error = "timeout";
+          return Promise.reject(error);
+        }
+        return Promise.resolve(responseData);
+      })
+      .then(
+        (result) => responseProcessing(entry, result),
+        (error) => handleFetchError(error, errorMessage)
+      );
+  };
+
+  const onPaymentOrStatusClick = (
+    restEndpoint,
+    ifCondition,
+    responseProcessing,
+    errorMessage
+  ) => {
+    const tempPaymentsArray = [...props.paymentList];
+
+    tempPaymentsArray
+      .filter((entryInArray) => ifCondition(entryInArray))
+      .forEach((entryInArray) =>
+        initiateFetchRequest(
+          entryInArray,
+          restEndpoint,
+          responseProcessing,
+          errorMessage
+        )
+      );
+  };
+
+  const clearPaymentsData = () => {
+    props.setPaymentList([]);
+  };
+
+  const countPendingPayments = () => {
+    return props.paymentList.filter(
+      (paymentEntry) => !paymentEntry.ispaymentDone
+    ).length;
+  };
   const pendingPaymentsCountBadge = (
-    <Badge variant="light">
-      {
-        props.paymentList.filter((paymentEntry) => !paymentEntry.ispaymentDone)
-          .length
-      }
-    </Badge>
+    <Badge variant="light">{countPendingPayments()}</Badge>
   );
 
+  const setTextForCreateEntryButton = () => {
+    return !props.showCreateEntry ? "Create Payment" : " X close";
+  };
+
+  const setCreateEntryButtonVariantValue = () => {
+    const buttonClass = !props.showCreateEntry ? "primary" : "danger";
+    return buttonClass;
+  };
+
+  const setCreateEntryButtonToolTipTitle = () => {
+    return !props.showCreateEntry ? "Create Payments" : "Close";
+  };
+
+  const setCreateEntryButtonToolTipText = () => {
+    const text = !props.showCreateEntry
+      ? "Create demo payments for ERP. These fileds are for demo presentation. Actual payment request will have more field."
+      : "Done creating payment enrty. Click to show status table";
+    return text;
+  };
   return (
     <div className="buttonGroupTop">
       <Button
-        text={!props.showCreateEntry ? "Create Payment" : " X close"}
-        variant={!props.showCreateEntry ? "primary" : "danger"}
+        text={setTextForCreateEntryButton()}
+        variant={setCreateEntryButtonVariantValue()}
         buttonClick={changeCreateFtEntriesVisibility}
-        popoverTitle="Create Payments"
-        popoverContent={
-          <p>
-            Create demo payments for ERP. These fileds are for demo
-            presentation. Actual payment request will have more field.
-          </p>
-        }
+        popoverTitle={setCreateEntryButtonToolTipTitle()}
+        popoverContent={<p>{setCreateEntryButtonToolTipText()}</p>}
         popoverPlacement="left"
       />{" "}
       <Button
@@ -136,7 +173,7 @@ function ButtonGroup(props) {
         badge={pendingPaymentsCountBadge}
         variant="primary"
         buttonClick={() =>
-          makeRestPostRequest(
+          onPaymentOrStatusClick(
             "https://yes-sales-team-demo-backend.herokuapp.com/yesapi/pay",
             (entry) => !entry.ispaymentDone,
             processFetchPaymentResponse,
@@ -157,7 +194,7 @@ function ButtonGroup(props) {
         text="Payment Status"
         variant="primary"
         buttonClick={() =>
-          makeRestPostRequest(
+          onPaymentOrStatusClick(
             "https://yes-sales-team-demo-backend.herokuapp.com/yesapi/status",
             (entry) => entry.ispaymentDone,
             processFetchStatusResponse,
@@ -185,5 +222,16 @@ function ButtonGroup(props) {
     </div>
   );
 }
+
+ButtonGroup.propTypes = {
+  paymentList: PropTypes.arrayOf(PropTypes.object).isRequired,
+  setPaymentList: PropTypes.func.isRequired,
+  showCreateEntry: PropTypes.bool.isRequired,
+  setShowCreateEntry: PropTypes.func.isRequired,
+  setShowAlert: PropTypes.func.isRequired,
+  setAlertMessage: PropTypes.func.isRequired,
+  // fadein: PropTypes.bool.isRequired,
+  // setfadein: PropTypes.func.isRequired,
+};
 
 export default ButtonGroup;
