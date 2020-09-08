@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+import Image from "react-bootstrap/Image";
 import ButtonGroup from "./components/ButtonGroup";
 import CreateEntry from "./components/CreateFtEntries";
 import AlertDismissiable from "./components/AlertDismissible";
@@ -8,7 +9,6 @@ import StatusTable from "./components/StatusTable";
 import Heading from "./components/HeadingComponent";
 import LandingCmponent from "./components/LandingComponent";
 
-import Image from "react-bootstrap/Image";
 
 import yesbanner from "./RESOURCES/logo.jpg";
 
