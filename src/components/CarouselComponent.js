@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import Carousel from "react-bootstrap/Carousel";
 
@@ -12,8 +13,10 @@ function CarouselComponent(props) {
     fontWeight: 900,
   };
 
+  const { isLandinghidden, setLandingHideBool } = props;
+
   const enterERP = () => {
-    props.setHide(!props.ishidden);
+    setLandingHideBool(!isLandinghidden);
   };
 
   return (
@@ -36,7 +39,6 @@ function CarouselComponent(props) {
             <div className="caption">
               <h3 style={style}>Get Status API</h3>
               <p style={style}>Get payment status in one click</p>
-              <p style={style}></p>
             </div>
           </Carousel.Caption>
         </Carousel.Item>
@@ -57,4 +59,9 @@ function CarouselComponent(props) {
     </div>
   );
 }
+
+CarouselComponent.propTypes = {
+  isLandinghidden: PropTypes.bool.isRequired,
+  setLandingHideBool: PropTypes.func.isRequired,
+};
 export default CarouselComponent;

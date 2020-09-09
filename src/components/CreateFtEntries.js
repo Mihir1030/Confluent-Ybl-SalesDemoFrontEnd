@@ -107,7 +107,7 @@ function CreateFtEntries(props) {
               placeholder="Beneficiary Name"
             />
             <InputComponent
-              xs={5}
+              xs="5"
               controlId="formAddress"
               label="Address"
               type="text"
@@ -141,7 +141,7 @@ function CreateFtEntries(props) {
           </BootStrapForm.Row>
           <BootStrapForm.Row>
             <InputComponent
-              xs={4}
+              xs="4"
               controlId="formAccount"
               label="Account No"
               type="text"
@@ -157,7 +157,7 @@ function CreateFtEntries(props) {
               placeholder="Beneficiary Bank Account"
             />
             <InputComponent
-              xs={5}
+              xs="5"
               controlId="formAmount"
               label="Amount"
               type="text"
