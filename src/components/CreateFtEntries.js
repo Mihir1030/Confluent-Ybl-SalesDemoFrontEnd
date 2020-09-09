@@ -83,7 +83,7 @@ function CreateFtEntries(props) {
 
   return (
     <div className="createcenter">
-      <Heading title="Create Payment Entries" />
+      <Heading title="Create Payment Entries" headingStyle="headingComponent" />
 
       <div>
         <BootStrapForm>
