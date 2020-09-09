@@ -232,8 +232,6 @@ ButtonGroup.propTypes = {
   setShowCreateEntry: PropTypes.func.isRequired,
   setShowAlert: PropTypes.func.isRequired,
   setAlertMessage: PropTypes.func.isRequired,
-  // fadein: PropTypes.bool.isRequired,
-  // setfadein: PropTypes.func.isRequired,
 };
 
 export default ButtonGroup;

@@ -4,8 +4,6 @@ import PropTypes from "prop-types";
 import BootStrapForm from "react-bootstrap/Form";
 import BootStrapCol from "react-bootstrap/Col";
 
-import classNames from "classnames";
-
 import Heading from "./HeadingComponent";
 import InputComponent from "./InputComponent";
 import Button from "./Button";
@@ -84,7 +82,7 @@ function CreateFtEntries(props) {
   // }
 
   return (
-    <div className={classNames("createcenter")}>
+    <div className="createcenter">
       <Heading title="Create Payment Entries" />
 
       <div>
@@ -204,7 +202,6 @@ function CreateFtEntries(props) {
 CreateFtEntries.propTypes = {
   paymentList: PropTypes.arrayOf(PropTypes.object).isRequired,
   setPaymentList: PropTypes.func.isRequired,
-  // fadein:PropTypes.bool.isRequired
 };
 
 export default CreateFtEntries;
