@@ -141,6 +141,15 @@ function ButtonGroup(props) {
     <Badge variant="light">{countPendingPayments()}</Badge>
   );
 
+  const countPendingStatus = () => {
+    return props.paymentList.filter(
+      (paymentEntry) => paymentEntry.ispaymentDone && !paymentEntry.isstatusDone
+    ).length;
+  };
+  const pendingStatusCountBadge = (
+    <Badge variant="light">{countPendingStatus()}</Badge>
+  );
+
   const setTextForCreateEntryButton = () => {
     return !props.showCreateEntry ? "Create Payment" : " X close";
   };
@@ -193,7 +202,8 @@ function ButtonGroup(props) {
         popoverPlacement="bottom"
       />{" "}
       <Button
-        text="Payment Status"
+        text="Payment Status "
+        badge={pendingStatusCountBadge}
         variant="primary"
         buttonClick={() =>
           onPaymentOrStatusClick(
