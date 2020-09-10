@@ -54,7 +54,7 @@ function CreateFtEntries(props) {
       beneficiaryAccountNumber === "" ||
       transferAmount === ""
     ) {
-      props.setAlertMessage("Please fill all fields");
+      props.setAlertMessage("Please fill in all the fields");
       props.setShowAlert(true);
       return;
     }
