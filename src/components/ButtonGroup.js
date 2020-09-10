@@ -13,18 +13,20 @@ function ButtonGroup(props) {
     currentPaymentEntry,
     paymentResponseData
   ) => {
-    const entryForUpdate = { ...currentPaymentEntry };
-    entryForUpdate.uniqueRefrenceNumber =
+    // eslint-disable-next-line no-param-reassign
+    currentPaymentEntry.uniqueRefrenceNumber =
       paymentResponseData.uniqueRefrenceNumber;
-    entryForUpdate.error = paymentResponseData.error.includes("IFSC")
+    // eslint-disable-next-line no-param-reassign
+    currentPaymentEntry.error = paymentResponseData.error.includes("IFSC")
       ? "Incorrect IFSC code"
       : "NA";
-    entryForUpdate.ispaymentDone = true;
+    // eslint-disable-next-line no-param-reassign
+    currentPaymentEntry.ispaymentDone = true;
 
     const tempPaymentListWithoutCurrentPaymentEntry = props.paymentList.filter(
-      (entry) => entry.uniqueRequestNo !== entryForUpdate.uniqueRequestNo
+      (entry) => entry.uniqueRequestNo !== currentPaymentEntry.uniqueRequestNo
     );
-    tempPaymentListWithoutCurrentPaymentEntry.push(entryForUpdate);
+    tempPaymentListWithoutCurrentPaymentEntry.push(currentPaymentEntry);
     props.setPaymentList(tempPaymentListWithoutCurrentPaymentEntry);
   };
 
@@ -32,22 +34,29 @@ function ButtonGroup(props) {
     currentPaymentEntry,
     paymentStatusReponseData
   ) => {
-    const entryForUpdate = { ...currentPaymentEntry };
-    entryForUpdate.status = paymentStatusReponseData.statuscode;
-    entryForUpdate.bankRefrenceNumber =
+    // eslint-disable-next-line no-param-reassign
+    currentPaymentEntry.status = paymentStatusReponseData.statuscode;
+    // eslint-disable-next-line no-param-reassign
+    currentPaymentEntry.bankRefrenceNumber =
       paymentStatusReponseData.bankRefrenceNumber;
-    entryForUpdate.statusError = paymentStatusReponseData.error.includes(
+    // eslint-disable-next-line no-param-reassign
+    currentPaymentEntry.statusError = paymentStatusReponseData.error.includes(
       "Request Not Found"
     )
       ? "Request Not Found"
       : paymentStatusReponseData.error;
-    entryForUpdate.isstatusDone = true;
+    // eslint-disable-next-line no-param-reassign
+    currentPaymentEntry.isstatusDone =
+      currentPaymentEntry.status === "COMPLETED" ||
+      currentPaymentEntry.status === "FAILED" ||
+      currentPaymentEntry.status === "SENT_TO_BENEFICIARY" ||
+      currentPaymentEntry.statusError === "Request Not Found";
 
     const tempPaymentListWithoutCurrentEntry = props.paymentList.filter(
       (paymentEntry) =>
-        paymentEntry.uniqueRequestNo !== entryForUpdate.uniqueRequestNo
+        paymentEntry.uniqueRequestNo !== currentPaymentEntry.uniqueRequestNo
     );
-    tempPaymentListWithoutCurrentEntry.push(entryForUpdate);
+    tempPaymentListWithoutCurrentEntry.push(currentPaymentEntry);
     props.setPaymentList(tempPaymentListWithoutCurrentEntry);
   };
 
@@ -198,7 +207,7 @@ function ButtonGroup(props) {
         buttonClick={() =>
           onPaymentOrStatusClick(
             "https://yes-sales-team-demo-backend.herokuapp.com/yesapi/status",
-            (entry) => entry.ispaymentDone,
+            (entry) => !entry.isstatusDone,
             processFetchStatusResponse,
             "this error during payment status!:"
           )
