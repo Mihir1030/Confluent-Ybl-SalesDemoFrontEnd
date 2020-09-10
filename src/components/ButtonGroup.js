@@ -83,7 +83,7 @@ function ButtonGroup(props) {
     };
   };
 
-  const initiateFetchRequest = (
+  const initiateFetchRequest = async (
     entryToProcess,
     restApiEndpoint,
     responseProcessing,
@@ -91,30 +91,21 @@ function ButtonGroup(props) {
   ) => {
     const entry = entryToProcess;
     const requestOptions = getFetchRequestOptionsObject(entry);
-    fetch(restApiEndpoint, requestOptions)
-      .then(async (response) => {
-        const responseData = await response.json();
+    const fetchResult = fetch(restApiEndpoint, requestOptions);
+    const response = await fetchResult;
+    let jsonData = null;
+    if (response.ok) {
+      jsonData = await response.json();
 
-        // check for error response
-        if (!response.ok) {
-          // get error message from body or default to response status
-          const error =
-            // (paymentResponseData && paymentResponseData.message) ||
-            response.status;
-          return Promise.reject(error);
-        }
-        if (responseData.yestimeout) {
-          const error = "timeout";
-          return Promise.reject(error);
-        }
-        const result = responseData;
+      if (jsonData.yestimeout) {
+        const error = "timeout";
+        handleFetchError(error, errorMessage);
+      }
 
-        return Promise.resolve(result);
-      })
-      .then(
-        (result) => responseProcessing(entry, result),
-        (error) => handleFetchError(error, errorMessage)
-      );
+      responseProcessing(entry, jsonData);
+    } else {
+      handleFetchError(response.statusText, errorMessage);
+    }
   };
 
   const onPaymentOrStatusClick = (
