@@ -9,7 +9,6 @@ import StatusTable from "./components/StatusTable";
 import Heading from "./components/HeadingComponent";
 import LandingCmponent from "./components/LandingComponent";
 
-
 import yesbanner from "./RESOURCES/logo.jpg";
 
 import "./components/landingComponent.css";
@@ -62,6 +61,8 @@ function App() {
         <CreateEntry
           paymentList={paymentList}
           setPaymentList={setPaymentList}
+          setShowAlert={setShowAlert}
+          setAlertMessage={setAlertMessage}
         />
       ) : null}
 

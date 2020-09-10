@@ -47,6 +47,17 @@ function CreateFtEntries(props) {
   }
 
   function updateEntryList() {
+    if (
+      beneficiaryName === "" ||
+      beneficiaryAddress === "" ||
+      beneficiaryBankIfsc === "" ||
+      beneficiaryAccountNumber === "" ||
+      transferAmount === ""
+    ) {
+      props.setAlertMessage("Please fill all fields");
+      props.setShowAlert(true);
+      return;
+    }
     const paymentObject = {
       uniqueRequestNo: uniqueRequestNumberGenerator(10),
       beneficiaryName,
@@ -202,6 +213,8 @@ function CreateFtEntries(props) {
 CreateFtEntries.propTypes = {
   paymentList: PropTypes.arrayOf(PropTypes.object).isRequired,
   setPaymentList: PropTypes.func.isRequired,
+  setAlertMessage: PropTypes.string.isRequired,
+  setShowAlert: PropTypes.bool.isRequired,
 };
 
 export default CreateFtEntries;
