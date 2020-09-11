@@ -1,18 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import Badge from "react-bootstrap/Badge";
 import Button from "./Button";
 
 function ButtonGroup(props) {
+  const [loading, setLoading] = useState(false);
+
+  const {
+    paymentList,
+    setPaymentList,
+    showCreateEntry,
+    setShowCreateEntry,
+    setShowAlert,
+    setAlertMessage,
+  } = props;
+
+  useEffect(() => {
+    setLoading(false);
+  }, [paymentList]);
+
   const changeCreateFtEntriesVisibility = () => {
-    props.setShowCreateEntry(!props.showCreateEntry);
+    setShowCreateEntry(!showCreateEntry);
   };
 
-  const processFetchPaymentResponse = (
-    currentPaymentEntry,
-    paymentResponseData
-  ) => {
+  const processFetchPaymentResponse = (paymentResponseData) => {
+    const currentPaymentEntry = paymentList.find(
+      (entry) =>
+        entry.uniqueRequestNo === paymentResponseData.uniqueRequestNumber
+    );
     // eslint-disable-next-line no-param-reassign
     currentPaymentEntry.uniqueRefrenceNumber =
       paymentResponseData.uniqueRefrenceNumber;
@@ -27,13 +43,14 @@ function ButtonGroup(props) {
       (entry) => entry.uniqueRequestNo !== currentPaymentEntry.uniqueRequestNo
     );
     tempPaymentListWithoutCurrentPaymentEntry.push(currentPaymentEntry);
-    props.setPaymentList(tempPaymentListWithoutCurrentPaymentEntry);
+    setPaymentList(tempPaymentListWithoutCurrentPaymentEntry);
   };
 
-  const processFetchStatusResponse = (
-    currentPaymentEntry,
-    paymentStatusReponseData
-  ) => {
+  const processFetchStatusResponse = (paymentStatusReponseData) => {
+    const currentPaymentEntry = props.paymentList.find(
+      (entry) =>
+        entry.uniqueRequestNo === paymentStatusReponseData.requestRefrenceNumber
+    );
     // eslint-disable-next-line no-param-reassign
     currentPaymentEntry.status = paymentStatusReponseData.statuscode;
     // eslint-disable-next-line no-param-reassign
@@ -57,23 +74,23 @@ function ButtonGroup(props) {
         paymentEntry.uniqueRequestNo !== currentPaymentEntry.uniqueRequestNo
     );
     tempPaymentListWithoutCurrentEntry.push(currentPaymentEntry);
-    props.setPaymentList(tempPaymentListWithoutCurrentEntry);
+    setPaymentList(tempPaymentListWithoutCurrentEntry);
   };
 
   const handleFetchError = (error, message) => {
     if (error === "timeout") {
-      props.setAlertMessage(
+      setAlertMessage(
         "Please try again/ Check if UAT payment server is under maintanance."
       );
-      props.setShowAlert(true);
+      setShowAlert(true);
     } else {
       console.error(message, error);
     }
   };
 
-  const getFetchRequestOptionsObject = (requestBody) => {
+  const getFetchRequestOptionsObject = (requestBody, restApiEndpoint) => {
     const requestBodyToStringfiy = { ...requestBody };
-    return {
+    const options = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -81,30 +98,32 @@ function ButtonGroup(props) {
       },
       body: JSON.stringify(requestBodyToStringfiy),
     };
+    return fetch(restApiEndpoint, options);
   };
 
   const initiateFetchRequest = async (
-    entryToProcess,
-    restApiEndpoint,
+    fetchObjArray,
     responseProcessing,
     errorMessage
   ) => {
-    const entry = entryToProcess;
-    const requestOptions = getFetchRequestOptionsObject(entry);
-    const fetchResult = fetch(restApiEndpoint, requestOptions);
-    const response = await fetchResult;
+    const responses = await Promise.all(fetchObjArray);
     let jsonData = null;
-    if (response.ok) {
-      jsonData = await response.json();
 
-      if (jsonData.yestimeout) {
-        const error = "timeout";
-        handleFetchError(error, errorMessage);
+    // eslint-disable-next-line no-restricted-syntax
+    for (const response of responses) {
+      if (response.ok) {
+        // eslint-disable-next-line no-await-in-loop
+        jsonData = await response.json();
+
+        if (jsonData.yestimeout) {
+          const error = "timeout";
+          handleFetchError(error, errorMessage);
+        }
+
+        responseProcessing(jsonData);
+      } else {
+        handleFetchError(response.statusText, errorMessage);
       }
-
-      responseProcessing(entry, jsonData);
-    } else {
-      handleFetchError(response.statusText, errorMessage);
     }
   };
 
@@ -114,35 +133,39 @@ function ButtonGroup(props) {
     responseProcessing,
     errorMessage
   ) => {
-    const tempPaymentsArray = [...props.paymentList];
+    const tempPaymentsArray = paymentList.filter((entryInArray) =>
+      ifCondition(entryInArray)
+    );
 
-    tempPaymentsArray
-      .filter((entryInArray) => ifCondition(entryInArray))
-      .forEach((entryInArray) =>
-        initiateFetchRequest(
-          entryInArray,
-          restEndpoint,
-          responseProcessing,
-          errorMessage
-        ).catch((err) => console.log("during fetch", restEndpoint, err))
-      );
+    if (tempPaymentsArray.length === 0) return;
+
+    setLoading(true);
+
+    const arryOfFetchObj = tempPaymentsArray.map((entry) =>
+      getFetchRequestOptionsObject(entry, restEndpoint)
+    );
+
+    initiateFetchRequest(
+      arryOfFetchObj,
+      responseProcessing,
+      errorMessage
+    ).catch((err) => console.log("during fetch", restEndpoint, err));
   };
 
   const clearPaymentsData = () => {
-    props.setPaymentList([]);
+    setPaymentList([]);
   };
 
   const countPendingPayments = () => {
-    return props.paymentList.filter(
-      (paymentEntry) => !paymentEntry.ispaymentDone
-    ).length;
+    return paymentList.filter((paymentEntry) => !paymentEntry.ispaymentDone)
+      .length;
   };
   const pendingPaymentsCountBadge = (
     <Badge variant="light">{countPendingPayments()}</Badge>
   );
 
   const countPendingStatus = () => {
-    return props.paymentList.filter(
+    return paymentList.filter(
       (paymentEntry) => paymentEntry.ispaymentDone && !paymentEntry.isstatusDone
     ).length;
   };
@@ -151,20 +174,20 @@ function ButtonGroup(props) {
   );
 
   const setTextForCreateEntryButton = () => {
-    return !props.showCreateEntry ? "Create Payment" : " X close";
+    return !showCreateEntry ? "Create Payment" : " X close";
   };
 
   const setCreateEntryButtonVariantValue = () => {
-    const buttonClass = !props.showCreateEntry ? "primary" : "danger";
+    const buttonClass = !showCreateEntry ? "primary" : "danger";
     return buttonClass;
   };
 
   const setCreateEntryButtonToolTipTitle = () => {
-    return !props.showCreateEntry ? "Create Payments" : "Close";
+    return !showCreateEntry ? "Create Payments" : "Close";
   };
 
   const setCreateEntryButtonToolTipText = () => {
-    const text = !props.showCreateEntry
+    const text = !showCreateEntry
       ? "Create demo payments for ERP. These fileds are for demo presentation. Actual payment request will have more field."
       : "Done creating payment enrty. Click to show status table";
     return text;
@@ -180,9 +203,10 @@ function ButtonGroup(props) {
         popoverPlacement="left"
       />{" "}
       <Button
-        text="Start Payment "
+        text={loading ? "Sending payments… " : "Start Payment "}
         badge={pendingPaymentsCountBadge}
         variant="primary"
+        isLoading={loading}
         buttonClick={() =>
           onPaymentOrStatusClick(
             "https://yes-sales-team-demo-backend.herokuapp.com/yesapi/pay",
@@ -202,9 +226,10 @@ function ButtonGroup(props) {
         popoverPlacement="bottom"
       />{" "}
       <Button
-        text="Payment Status "
+        text={loading ? "Getting payment status… " : "Payment Status "}
         badge={pendingStatusCountBadge}
         variant="primary"
+        isLoading={loading}
         buttonClick={() =>
           onPaymentOrStatusClick(
             "https://yes-sales-team-demo-backend.herokuapp.com/yesapi/status",
@@ -228,7 +253,7 @@ function ButtonGroup(props) {
         variant="danger"
         buttonClick={clearPaymentsData}
         popoverTitle="Clear data"
-        popoverContent={<p>Delete all payment dta from demo ERP.</p>}
+        popoverContent={<p>Delete all payment data from demo ERP.</p>}
         popoverPlacement="right"
       />{" "}
     </div>

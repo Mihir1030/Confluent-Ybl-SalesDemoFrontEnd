@@ -14,6 +14,7 @@ function Button(props) {
     variant,
     buttonClick,
     text,
+    isLoading,
   } = props;
 
   const popover = (
@@ -29,7 +30,11 @@ function Button(props) {
       placement={popoverPlacement}
       overlay={popover}
     >
-      <BootStrapButton variant={variant} onClick={buttonClick}>
+      <BootStrapButton
+        variant={variant}
+        onClick={buttonClick}
+        disabled={isLoading}
+      >
         {text}
         {badge}
       </BootStrapButton>
@@ -45,10 +50,12 @@ Button.propTypes = {
   variant: PropTypes.string.isRequired,
   buttonClick: PropTypes.func.isRequired,
   text: PropTypes.string.isRequired,
+  isLoading: PropTypes.bool,
 };
 
 Button.defaultProps = {
   badge: null,
+  isLoading: false,
 };
 
 export default Button;
