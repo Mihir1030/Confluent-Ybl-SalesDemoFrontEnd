@@ -124,7 +124,7 @@ function ButtonGroup(props) {
           restEndpoint,
           responseProcessing,
           errorMessage
-        )
+        ).catch((err) => console.log("during fetch", restEndpoint, err))
       );
   };
 
