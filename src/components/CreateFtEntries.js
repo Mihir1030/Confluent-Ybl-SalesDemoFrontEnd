@@ -77,7 +77,7 @@ function CreateFtEntries(props) {
       status: "",
     };
 
-    const tempEntryList = [...props.paymentList];
+    const tempEntryList = JSON.parse(JSON.stringify(props.paymentList));
 
     tempEntryList.push(paymentObject);
 
