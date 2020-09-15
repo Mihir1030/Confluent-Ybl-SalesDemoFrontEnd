@@ -24,57 +24,78 @@ function ButtonGroup(props) {
     setShowCreateEntry(!showCreateEntry);
   };
 
-  const processFetchPaymentResponse = (paymentResponseData) => {
-    const currentPaymentEntry = paymentList.find(
-      (entry) =>
-        entry.uniqueRequestNo === paymentResponseData.uniqueRequestNumber
-    );
-    // eslint-disable-next-line no-param-reassign
-    currentPaymentEntry.uniqueRefrenceNumber =
-      paymentResponseData.uniqueRefrenceNumber;
-    // eslint-disable-next-line no-param-reassign
-    currentPaymentEntry.error = paymentResponseData.error.includes("IFSC")
-      ? "Incorrect IFSC code"
-      : "NA";
-    // eslint-disable-next-line no-param-reassign
-    currentPaymentEntry.ispaymentDone = true;
+  const processFetchPaymentResponse = (paymentResponseDataArray) => {
+    let oldPaymentlistState = JSON.parse(JSON.stringify(paymentList));
 
-    const tempPaymentListWithoutCurrentPaymentEntry = props.paymentList.filter(
-      (entry) => entry.uniqueRequestNo !== currentPaymentEntry.uniqueRequestNo
-    );
-    tempPaymentListWithoutCurrentPaymentEntry.push(currentPaymentEntry);
-    setPaymentList(tempPaymentListWithoutCurrentPaymentEntry);
+    const updatedPaymentObjects = [];
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const paymentResponseData of paymentResponseDataArray) {
+      const paymentToUpdate = {
+        ...paymentList.find(
+          (entry) =>
+            entry.uniqueRequestNo === paymentResponseData.uniqueRequestNumber
+        ),
+      };
+
+      paymentToUpdate.uniqueRefrenceNumber =
+        paymentResponseData.uniqueRefrenceNumber;
+
+      paymentToUpdate.error = paymentResponseData.error.includes("IFSC")
+        ? "Incorrect IFSC code"
+        : "NA";
+
+      paymentToUpdate.ispaymentDone = true;
+
+      oldPaymentlistState = oldPaymentlistState.filter(
+        (entry) => entry.uniqueRequestNo !== paymentToUpdate.uniqueRequestNo
+      );
+      updatedPaymentObjects.push(paymentToUpdate);
+    }
+
+    setPaymentList([...updatedPaymentObjects, ...oldPaymentlistState]);
   };
 
-  const processFetchStatusResponse = (paymentStatusReponseData) => {
-    const currentPaymentEntry = props.paymentList.find(
-      (entry) =>
-        entry.uniqueRequestNo === paymentStatusReponseData.requestRefrenceNumber
-    );
-    // eslint-disable-next-line no-param-reassign
-    currentPaymentEntry.status = paymentStatusReponseData.statuscode;
-    // eslint-disable-next-line no-param-reassign
-    currentPaymentEntry.bankRefrenceNumber =
-      paymentStatusReponseData.bankRefrenceNumber;
-    // eslint-disable-next-line no-param-reassign
-    currentPaymentEntry.statusError = paymentStatusReponseData.error.includes(
-      "Request Not Found"
-    )
-      ? "Request Not Found"
-      : paymentStatusReponseData.error;
-    // eslint-disable-next-line no-param-reassign
-    currentPaymentEntry.isstatusDone =
-      currentPaymentEntry.status === "COMPLETED" ||
-      currentPaymentEntry.status === "FAILED" ||
-      currentPaymentEntry.status === "SENT_TO_BENEFICIARY" ||
-      currentPaymentEntry.statusError === "Request Not Found";
+  const processFetchStatusResponse = (paymentStatusReponseDataArray) => {
+    let oldPaymentlistState = JSON.parse(JSON.stringify(paymentList));
 
-    const tempPaymentListWithoutCurrentEntry = props.paymentList.filter(
-      (paymentEntry) =>
-        paymentEntry.uniqueRequestNo !== currentPaymentEntry.uniqueRequestNo
-    );
-    tempPaymentListWithoutCurrentEntry.push(currentPaymentEntry);
-    setPaymentList(tempPaymentListWithoutCurrentEntry);
+    const updatedPaymentObjects = [];
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const statusResponseData of paymentStatusReponseDataArray) {
+      const paymentEntryToUpdate = {
+        ...paymentList.find(
+          (entry) =>
+            entry.uniqueRequestNo === statusResponseData.requestRefrenceNumber
+        ),
+      };
+
+      paymentEntryToUpdate.status = statusResponseData.statuscode;
+
+      paymentEntryToUpdate.bankRefrenceNumber =
+        statusResponseData.bankRefrenceNumber;
+
+      paymentEntryToUpdate.statusError = statusResponseData.error.includes(
+        "Request Not Found"
+      )
+        ? "Request Not Found"
+        : statusResponseData.error;
+
+      paymentEntryToUpdate.isstatusDone =
+        paymentEntryToUpdate.status === "COMPLETED" ||
+        paymentEntryToUpdate.status === "FAILED" ||
+        paymentEntryToUpdate.status === "SENT_TO_BENEFICIARY" ||
+        paymentEntryToUpdate.statusError === "Request Not Found";
+
+      oldPaymentlistState = oldPaymentlistState.filter(
+        (paymentEntry) =>
+          paymentEntry.uniqueRequestNo !== paymentEntryToUpdate.uniqueRequestNo
+      );
+
+      updatedPaymentObjects.push(paymentEntryToUpdate);
+    }
+
+    setPaymentList([...updatedPaymentObjects, ...oldPaymentlistState]);
   };
 
   const handleFetchError = (error, message) => {
@@ -101,11 +122,8 @@ function ButtonGroup(props) {
     return fetch(restApiEndpoint, options);
   };
 
-  const initiateFetchRequest = async (
-    fetchObjArray,
-    responseProcessing,
-    errorMessage
-  ) => {
+  const initiateFetchRequest = async (fetchObjArray, errorMessage) => {
+    const requestResponses = [];
     const responses = await Promise.all(fetchObjArray);
     let jsonData = null;
 
@@ -120,11 +138,12 @@ function ButtonGroup(props) {
           handleFetchError(error, errorMessage);
         }
 
-        responseProcessing(jsonData);
+        requestResponses.push(jsonData);
       } else {
         handleFetchError(response.statusText, errorMessage);
       }
     }
+    return requestResponses;
   };
 
   const onPaymentOrStatusClick = (
@@ -145,11 +164,9 @@ function ButtonGroup(props) {
       getFetchRequestOptionsObject(entry, restEndpoint)
     );
 
-    initiateFetchRequest(
-      arryOfFetchObj,
-      responseProcessing,
-      errorMessage
-    ).catch((err) => console.log("during fetch", restEndpoint, err));
+    initiateFetchRequest(arryOfFetchObj, errorMessage)
+      .then((result) => responseProcessing(result))
+      .catch((err) => console.log("during fetch", restEndpoint, err));
   };
 
   const clearPaymentsData = () => {
