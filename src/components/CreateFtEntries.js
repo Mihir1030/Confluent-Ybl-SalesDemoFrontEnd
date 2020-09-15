@@ -18,11 +18,10 @@ function CreateFtEntries(props) {
 
   const onChangeFunction = (event, inputState, setInputState, regexPattern) => {
     const validationPattern = regexPattern;
-    if (
-      event.target.value === "" ||
-      validationPattern.test(event.target.value)
-    ) {
-      setInputState(event.target.value);
+    const { value: inputValue } = event.target;
+
+    if (inputValue === "" || validationPattern.test(inputValue)) {
+      setInputState(inputValue);
     } else {
       setInputState(inputState);
     }
@@ -33,13 +32,15 @@ function CreateFtEntries(props) {
   const regexIfscAlphanumeric = /^[A-Z0-9\b]+$/;
   const regexOnlyLetters = /^[a-zA-Z' ']+$/;
 
-  function onChangeTransferType(e) {
-    setTransferType(e.target.value);
+  function onChangeFundTransferMode(event) {
+    const { value: transferModeSelected } = event.target;
+    setTransferType(transferModeSelected);
   }
 
   function uniqueRequestNumberGenerator(length) {
     const chars =
       "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
     let result = "";
     for (let i = length; i > 0; i -= 1)
       result += chars[Math.floor(Math.random() * chars.length)];
@@ -86,11 +87,6 @@ function CreateFtEntries(props) {
     setbeneAccountNumber("");
     setAmount("");
   }
-
-  // const faddingAnimation = () => {
-
-  //   return props.fadein?'fade' : 'fadeOut';
-  // }
 
   return (
     <div className="createcenter">
@@ -184,7 +180,7 @@ function CreateFtEntries(props) {
               <BootStrapForm.Label>Type</BootStrapForm.Label>
               <BootStrapForm.Control
                 as="select"
-                onChange={onChangeTransferType}
+                onChange={onChangeFundTransferMode}
                 defaultValue={transferType}
               >
                 <option>NEFT</option>
@@ -213,8 +209,8 @@ function CreateFtEntries(props) {
 CreateFtEntries.propTypes = {
   paymentList: PropTypes.arrayOf(PropTypes.object).isRequired,
   setPaymentList: PropTypes.func.isRequired,
-  setAlertMessage: PropTypes.string.isRequired,
-  setShowAlert: PropTypes.bool.isRequired,
+  setAlertMessage: PropTypes.func.isRequired,
+  setShowAlert: PropTypes.func.isRequired,
 };
 
 export default CreateFtEntries;
