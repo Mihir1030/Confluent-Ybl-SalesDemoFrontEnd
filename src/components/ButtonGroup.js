@@ -5,7 +5,8 @@ import Badge from "react-bootstrap/Badge";
 import Button from "./Button";
 
 function ButtonGroup(props) {
-  const [loading, setLoading] = useState(false);
+  const [loadingPayments, setLoadingPayments] = useState(false);
+  const [loadingStatus, setLoadingStatus] = useState(false);
 
   const {
     paymentList,
@@ -17,7 +18,8 @@ function ButtonGroup(props) {
   } = props;
 
   useEffect(() => {
-    setLoading(false);
+    setLoadingPayments(false);
+    setLoadingStatus(false);
   }, [paymentList]);
 
   const changeCreateFtEntriesVisibility = () => {
@@ -109,7 +111,7 @@ function ButtonGroup(props) {
     }
   };
 
-  const getFetchRequestOptionsObject = (requestBody, restApiEndpoint) => {
+  const getFetchRequestObject = (requestBody, restApiEndpoint) => {
     const requestBodyToStringfiy = { ...requestBody };
     const options = {
       method: "POST",
@@ -122,7 +124,10 @@ function ButtonGroup(props) {
     return fetch(restApiEndpoint, options);
   };
 
-  const initiateFetchRequest = async (fetchObjArray, errorMessage) => {
+  const initiateFetchRequestsAndGetResponse = async (
+    fetchObjArray,
+    errorMessage
+  ) => {
     const requestResponses = [];
     const responses = await Promise.all(fetchObjArray);
     let jsonData = null;
@@ -149,8 +154,9 @@ function ButtonGroup(props) {
   const onPaymentOrStatusClick = (
     restEndpoint,
     ifCondition,
-    responseProcessing,
-    errorMessage
+    responseProcessingFunction,
+    errorMessage,
+    setLoadingFunction
   ) => {
     const tempPaymentsArray = paymentList.filter((entryInArray) =>
       ifCondition(entryInArray)
@@ -158,14 +164,14 @@ function ButtonGroup(props) {
 
     if (tempPaymentsArray.length === 0) return;
 
-    setLoading(true);
+    setLoadingFunction(true);
 
     const arryOfFetchObj = tempPaymentsArray.map((entry) =>
-      getFetchRequestOptionsObject(entry, restEndpoint)
+      getFetchRequestObject(entry, restEndpoint)
     );
 
-    initiateFetchRequest(arryOfFetchObj, errorMessage)
-      .then((result) => responseProcessing(result))
+    initiateFetchRequestsAndGetResponse(arryOfFetchObj, errorMessage)
+      .then((result) => responseProcessingFunction(result))
       .catch((err) => console.log("during fetch", restEndpoint, err));
   };
 
@@ -220,16 +226,17 @@ function ButtonGroup(props) {
         popoverPlacement="left"
       />{" "}
       <Button
-        text={loading ? "Sending payments… " : "Start Payment "}
+        text={loadingPayments ? "Sending payments… " : "Start Payment "}
         badge={pendingPaymentsCountBadge}
         variant="primary"
-        isLoading={loading}
+        isLoading={loadingPayments}
         buttonClick={() =>
           onPaymentOrStatusClick(
             "https://yes-sales-team-demo-backend.herokuapp.com/yesapi/pay",
             (entry) => !entry.ispaymentDone,
             processFetchPaymentResponse,
-            "this error during payment!:"
+            "this error during payment!:",
+            setLoadingPayments
           )
         }
         popoverTitle="Send Payments"
@@ -243,16 +250,17 @@ function ButtonGroup(props) {
         popoverPlacement="bottom"
       />{" "}
       <Button
-        text={loading ? "Getting payment status… " : "Payment Status "}
+        text={loadingStatus ? "Getting payment status… " : "Payment Status "}
         badge={pendingStatusCountBadge}
         variant="primary"
-        isLoading={loading}
+        isLoading={loadingStatus}
         buttonClick={() =>
           onPaymentOrStatusClick(
             "https://yes-sales-team-demo-backend.herokuapp.com/yesapi/status",
             (entry) => !entry.isstatusDone,
             processFetchStatusResponse,
-            "this error during payment status!:"
+            "this error during payment status!:",
+            setLoadingStatus
           )
         }
         popoverTitle="Get Payments Status"
