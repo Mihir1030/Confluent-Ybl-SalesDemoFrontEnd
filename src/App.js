@@ -16,11 +16,11 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
+  const [showLandingComponent, setshowLandingComponent] = useState(true);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
   const [showCreateEntry, setShowCreateEntry] = useState(false);
   const [paymentList, setPaymentList] = useState([]);
-  const [alertMessage, setAlertMessage] = useState("");
-  const [showAlert, setShowAlert] = useState(false);
-  const [showLandingComponent, setshowLandingComponent] = useState(true);
 
   return (
     <div className="App">
