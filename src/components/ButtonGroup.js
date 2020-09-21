@@ -4,18 +4,16 @@ import PropTypes from "prop-types";
 import Badge from "react-bootstrap/Badge";
 import Button from "./Button";
 
-function ButtonGroup(props) {
+const ButtonGroup = ({
+  paymentList,
+  setPaymentList,
+  showCreateEntry,
+  setShowCreateEntry,
+  setShowAlert,
+  setAlertMessage,
+}) => {
   const [loadingPayments, setLoadingPayments] = useState(false);
   const [loadingStatus, setLoadingStatus] = useState(false);
-
-  const {
-    paymentList,
-    setPaymentList,
-    showCreateEntry,
-    setShowCreateEntry,
-    setShowAlert,
-    setAlertMessage,
-  } = props;
 
   useEffect(() => {
     setLoadingPayments(false);
@@ -107,7 +105,10 @@ function ButtonGroup(props) {
       );
       setShowAlert(true);
     } else {
-      setAlertMessage("Please refresh and try again.");
+      setAlertMessage(
+        "Please refresh and try again/ Check your internet connection"
+      );
+      setShowAlert(true);
       console.error(errorTitle, error);
     }
   };
@@ -174,7 +175,7 @@ function ButtonGroup(props) {
 
     initiateFetchRequestsAndGetResponse(arryOfFetchObj, errorMessage)
       .then((result) => responseProcessingFunction(result))
-      .catch((err) => console.log("during fetch", restEndpoint, err));
+      .catch((err) => handleFetchError(err, `during fetch ${restEndpoint}`));
   };
 
   const clearPaymentsData = () => {
@@ -273,7 +274,7 @@ function ButtonGroup(props) {
       />{" "}
     </div>
   );
-}
+};
 
 ButtonGroup.propTypes = {
   paymentList: PropTypes.arrayOf(PropTypes.object).isRequired,
