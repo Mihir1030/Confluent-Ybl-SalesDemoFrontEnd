@@ -8,6 +8,8 @@ import Heading from "./HeadingComponent";
 import InputComponent from "./InputComponent";
 import Button from "./Button";
 
+import Utils from "../utils";
+
 function CreateFtEntries(props) {
   const [beneficiaryName, setbeneName] = useState("Demo name");
   const [beneficiaryAddress, setbeneAddress] = useState("Demo address");
@@ -16,35 +18,25 @@ function CreateFtEntries(props) {
   const [transferAmount, setAmount] = useState("");
   const [transferType, setTransferType] = useState("FT");
 
-  const onChangeFunction = (event, inputState, setInputState, regexPattern) => {
+  const onChangeFunction = (
+    regexPattern,
+    event,
+    setInputElementState,
+    currentInputElementState
+  ) => {
     const validationPattern = regexPattern;
     const { value: inputValue } = event.target;
 
     if (inputValue === "" || validationPattern.test(inputValue)) {
-      setInputState(inputValue);
+      setInputElementState(inputValue);
     } else {
-      setInputState(inputState);
+      setInputElementState(currentInputElementState);
     }
   };
-
-  const regexAmount = /^[0-9.\b]+$/;
-  const regexAccountNumberNumericOnly = /^[0-9\b]+$/;
-  const regexIfscAlphanumeric = /^[A-Z0-9\b]+$/;
-  const regexOnlyLetters = /^[a-zA-Z' ']+$/;
 
   function onChangeFundTransferMode(event) {
     const { value: transferModeSelected } = event.target;
     setTransferType(transferModeSelected);
-  }
-
-  function uniqueRequestNumberGenerator(length) {
-    const chars =
-      "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-    let result = "";
-    for (let i = length; i > 0; i -= 1)
-      result += chars[Math.floor(Math.random() * chars.length)];
-    return result;
   }
 
   function updateEntryList() {
@@ -60,7 +52,7 @@ function CreateFtEntries(props) {
       return;
     }
     const paymentObject = {
-      uniqueRequestNo: uniqueRequestNumberGenerator(10),
+      uniqueRequestNo: Utils.uniqueRequestNumberGenerator(10),
       beneficiaryName,
       beneficiaryAddress,
       transferAmount,
@@ -90,94 +82,82 @@ function CreateFtEntries(props) {
 
   return (
     <div className="createcenter">
-      <Heading title="Create Payment Entries" headingStyle="headingComponent" />
+      <Heading title="Create Payment Entries" />
 
       <div>
         <BootStrapForm>
           <BootStrapForm.Row>
             <InputComponent
-              xs="auto"
-              controlId="formName"
-              label="Name"
-              type="text"
+              label="Beneficiary Name"
               value={beneficiaryName}
               onchangeFun={(event) =>
                 onChangeFunction(
+                  Utils.regexOnlyLetters,
                   event,
-                  beneficiaryName,
                   setbeneName,
-                  regexOnlyLetters
+                  beneficiaryName
                 )
               }
-              placeholder="Beneficiary Name"
             />
             <InputComponent
               xs="5"
-              controlId="formAddress"
-              label="Address"
-              type="text"
+              label="Beneficiary Address"
               value={beneficiaryAddress}
               onchangeFun={(event) =>
                 onChangeFunction(
+                  Utils.regexOnlyLetters,
                   event,
-                  beneficiaryAddress,
                   setbeneAddress,
-                  regexOnlyLetters
+                  beneficiaryAddress
                 )
               }
-              placeholder="Beneficiary Address"
             />
             <InputComponent
-              xs="auto"
-              controlId="formIfsc"
-              label="IFSC"
-              type="text"
+              label="Beneficiary IFSC"
               value={beneficiaryBankIfsc}
               onchangeFun={(event) =>
                 onChangeFunction(
+                  Utils.regexIfscAlphanumeric,
                   event,
-                  beneficiaryBankIfsc,
                   setbeneIfsc,
-                  regexIfscAlphanumeric
+                  beneficiaryBankIfsc
                 )
               }
-              placeholder="Beneficiary Bank IFSC"
             />
           </BootStrapForm.Row>
           <BootStrapForm.Row>
             <InputComponent
               xs="4"
-              controlId="formAccount"
-              label="Account No"
-              type="text"
+              label="Beneficiary Account No"
               value={beneficiaryAccountNumber}
               onchangeFun={(event) =>
                 onChangeFunction(
+                  Utils.regexAccountNumberNumericOnly,
                   event,
-                  beneficiaryAccountNumber,
                   setbeneAccountNumber,
-                  regexAccountNumberNumericOnly
+                  beneficiaryAccountNumber
                 )
               }
-              placeholder="Beneficiary Bank Account"
             />
             <InputComponent
               xs="5"
-              controlId="formAmount"
               label="Amount"
-              type="text"
               value={transferAmount}
               onchangeFun={(event) =>
-                onChangeFunction(event, transferAmount, setAmount, regexAmount)
+                onChangeFunction(
+                  Utils.regexAmount,
+                  event,
+                  setAmount,
+                  transferAmount
+                )
               }
-              placeholder="Amount"
             />
             <BootStrapForm.Group
               as={BootStrapCol}
               xs="auto"
-              controlId="formTpe"
+              controlId="formTransferMode"
             >
-              <BootStrapForm.Label>Type</BootStrapForm.Label>
+              <BootStrapForm.Label>Transfer mode</BootStrapForm.Label>
               <BootStrapForm.Control
                 as="select"
                 onChange={onChangeFundTransferMode}
@@ -195,9 +175,7 @@ function CreateFtEntries(props) {
               text="Add entry"
               variant="outline-success"
               buttonClick={updateEntryList}
-              popoverTitle="Create Entry"
               popoverContent={<p>Add the payment data to Payment Table</p>}
-              popoverPlacement="bottom"
             />{" "}
           </BootStrapForm.Group>
         </BootStrapForm>
