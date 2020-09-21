@@ -2,7 +2,11 @@
   /* Hidden by default */
   display: flex;
   justify-content: center;
-  position: fixed; /* Stay in place */
+  flex-direction: column;
+  position: fixed;
+
+  /* Stay in place */
+  margin: auto;
   z-index: 1; /* Sit on top */
   width: 100%; /* Full width */
   height: 100%; /* Full height */
@@ -14,6 +18,12 @@
 .carouselHolder {
   margin: auto;
   width: 50%;
+  margin-bottom: 0;
+}
+
+.landingButtondiv {
+  margin: auto;
+  margin-top: 20px;
 }
 
 .caption {
