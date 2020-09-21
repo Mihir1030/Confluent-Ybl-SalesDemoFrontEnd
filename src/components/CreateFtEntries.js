@@ -75,11 +75,11 @@ const CreateFtEntries = ({
       status: "",
     };
 
-    const tempEntryList = JSON.parse(JSON.stringify(paymentList));
+    const tempPaymentsEntryList = JSON.parse(JSON.stringify(paymentList));
 
-    tempEntryList.push(paymentObject);
+    tempPaymentsEntryList.push(paymentObject);
 
-    setPaymentList(tempEntryList);
+    Utils.sortAndUpdatePaymentListState(tempPaymentsEntryList, setPaymentList);
 
     setbeneIfsc("");
     setbeneAccountNumber("");

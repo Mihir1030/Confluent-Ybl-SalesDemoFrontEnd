@@ -8,6 +8,16 @@ const uniqueRequestNumberGenerator = (length) => {
   return result;
 };
 
+const sortAndUpdatePaymentListState = (
+  paymentListArrayToBeSorted,
+  updatePaymentListStateFunction
+) => {
+  const paymentListSortedDescending = [
+    ...paymentListArrayToBeSorted.sort((a, b) => b.srNo - a.srNo),
+  ];
+  updatePaymentListStateFunction(paymentListSortedDescending);
+};
+
 const regexAmount = /^[0-9.\b]+$/;
 const regexAccountNumberNumericOnly = /^[0-9\b]+$/;
 const regexIfscAlphanumeric = /^[A-Z0-9\b]+$/;
@@ -15,6 +25,7 @@ const regexOnlyLetters = /^[a-zA-Z' ']+$/;
 
 export default {
   uniqueRequestNumberGenerator,
+  sortAndUpdatePaymentListState,
   regexAmount,
   regexAccountNumberNumericOnly,
   regexIfscAlphanumeric,

@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import Badge from "react-bootstrap/Badge";
 import Button from "./Button";
 
+import Utils from "../utils";
+
 const ButtonGroup = ({
   paymentList,
   setPaymentList,
@@ -53,7 +55,10 @@ const ButtonGroup = ({
       updatedPaymentObjects.push(paymentToUpdate);
     }
 
-    setPaymentList([...updatedPaymentObjects, ...oldPaymentlistState]);
+    Utils.sortAndUpdatePaymentListState(
+      [...updatedPaymentObjects, ...oldPaymentlistState],
+      setPaymentList
+    );
   };
 
   const processFetchStatusResponse = (paymentStatusReponseDataArray) => {
@@ -95,7 +100,10 @@ const ButtonGroup = ({
       updatedPaymentObjects.push(paymentEntryToUpdate);
     }
 
-    setPaymentList([...updatedPaymentObjects, ...oldPaymentlistState]);
+    Utils.sortAndUpdatePaymentListState(
+      [...updatedPaymentObjects, ...oldPaymentlistState],
+      setPaymentList
+    );
   };
 
   const handleFetchError = (error, errorTitle) => {
