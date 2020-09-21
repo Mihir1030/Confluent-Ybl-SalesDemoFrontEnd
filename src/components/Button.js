@@ -8,7 +8,6 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 function Button(props) {
   const {
     badge,
-    popoverTitle,
     popoverContent,
     popoverPlacement,
     variant,
@@ -17,9 +16,9 @@ function Button(props) {
     isLoading,
   } = props;
 
-  const popover = (
+  const popoverToolTip = (
     <Popover id="popover-basic">
-      <Popover.Title as="h3">{popoverTitle}</Popover.Title>
+      <Popover.Title as="h3">{text}</Popover.Title>
       <Popover.Content>{popoverContent}</Popover.Content>
     </Popover>
   );
@@ -28,7 +27,7 @@ function Button(props) {
     <OverlayTrigger
       // trigger="hover"
       placement={popoverPlacement}
-      overlay={popover}
+      overlay={popoverToolTip}
     >
       <BootStrapButton
         variant={variant}
@@ -44,10 +43,9 @@ function Button(props) {
 
 Button.propTypes = {
   badge: PropTypes.element,
-  popoverTitle: PropTypes.string.isRequired,
   popoverContent: PropTypes.element.isRequired,
-  popoverPlacement: PropTypes.string.isRequired,
-  variant: PropTypes.string.isRequired,
+  popoverPlacement: PropTypes.string,
+  variant: PropTypes.string,
   buttonClick: PropTypes.func.isRequired,
   text: PropTypes.string.isRequired,
   isLoading: PropTypes.bool,
@@ -56,6 +54,8 @@ Button.propTypes = {
 Button.defaultProps = {
   badge: null,
   isLoading: false,
+  variant: "primary",
+  popoverPlacement: "bottom",
 };
 
 export default Button;
