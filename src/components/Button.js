@@ -5,17 +5,15 @@ import BootStrapButton from "react-bootstrap/Button";
 import Popover from "react-bootstrap/Popover";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 
-function Button(props) {
-  const {
-    badge,
-    popoverContent,
-    popoverPlacement,
-    variant,
-    buttonClick,
-    text,
-    isLoading,
-  } = props;
-
+const Button = ({
+  badge,
+  popoverContent,
+  popoverPlacement,
+  variant,
+  buttonClick,
+  text,
+  isLoading,
+}) => {
   const popoverToolTip = (
     <Popover id="popover-basic">
       <Popover.Title as="h3">{text}</Popover.Title>
@@ -39,7 +37,7 @@ function Button(props) {
       </BootStrapButton>
     </OverlayTrigger>
   );
-}
+};
 
 Button.propTypes = {
   badge: PropTypes.element,
