@@ -11,7 +11,7 @@ const AlertDismissible = ({ setShowAlert, alertMessage }) => (
 );
 
 AlertDismissible.propTypes = {
-  setShowAlert: PropTypes.bool.isRequired,
+  setShowAlert: PropTypes.func.isRequired,
   alertMessage: PropTypes.string.isRequired,
 };
 
