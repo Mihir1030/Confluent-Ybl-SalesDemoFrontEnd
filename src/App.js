@@ -4,14 +4,14 @@ import Image from "react-bootstrap/Image";
 import ButtonGroup from "./components/ButtonGroup";
 import CreateEntry from "./components/CreateFtEntries";
 import AlertDismissiable from "./components/AlertDismissible";
-import PaymentTable from "./components/PaymentTable";
-import StatusTable from "./components/StatusTable";
+import PaymentTable from "./components/tables/PaymentTable";
+import StatusTable from "./components/tables/StatusTable";
 import Heading from "./components/HeadingComponent";
-import LandingCmponent from "./components/LandingComponent";
+import LandingCmponent from "./components/landingComponent/LandingComponent";
 
 import yesbanner from "./RESOURCES/logo.jpg";
 
-import "./components/landingComponent.css";
+import "./components/landingComponent/landingComponent.css";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 

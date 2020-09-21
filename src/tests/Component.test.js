@@ -4,9 +4,9 @@ import { act } from "react-dom/test-utils";
 
 import uuid from "react-uuid";
 
-import Carousel from "../components/CarouselComponent";
+import Carousel from "../components/landingComponent/CarouselComponent";
 import Heading from "../components/HeadingComponent";
-import DataGrid from "../components/GridComponent";
+import DataGrid from "../components/tables/GridComponent";
 import Button from "../components/Button";
 
 let container = null;

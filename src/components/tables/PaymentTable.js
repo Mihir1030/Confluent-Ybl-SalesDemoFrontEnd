@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import uuid from "react-uuid";
 
 import GridComponent from "./GridComponent";
-import Heading from "./HeadingComponent";
+import Heading from "../HeadingComponent";
 
 const PaymentTable = ({ paymentList }) => {
   console.log("pay table run");

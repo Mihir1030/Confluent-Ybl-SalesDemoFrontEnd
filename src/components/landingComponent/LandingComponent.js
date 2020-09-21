@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import CarouselComponent from "./CarouselComponent";
-import Button from "./Button";
+import Button from "../Button";
 
 const LandingComponent = ({
   showLandingComponent,

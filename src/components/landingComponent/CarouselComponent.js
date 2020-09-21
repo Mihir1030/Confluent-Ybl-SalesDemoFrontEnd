@@ -2,7 +2,7 @@ import React from "react";
 
 import Carousel from "react-bootstrap/Carousel";
 
-import yes from "../RESOURCES/yes.jpeg";
+import yes from "../../RESOURCES/yes.jpeg";
 
 const CarouselComponent = () => {
   const style = {
