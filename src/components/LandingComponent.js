@@ -2,15 +2,30 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import CarouselComponent from "./CarouselComponent";
+import Button from "./Button";
 
 function LandingComponent(props) {
   const { showLandingComponent, setshowLandingComponent } = props;
+
+  const enterERP = () => {
+    setshowLandingComponent(!showLandingComponent);
+  };
+
   return (
     <div className="landing">
-      <CarouselComponent
-        isLandinghidden={showLandingComponent}
-        setLandingHideBool={setshowLandingComponent}
-      />
+      <CarouselComponent />
+      <div className="landingButtondiv">
+        <Button
+          text="Open Demo ERP"
+          variant="success"
+          buttonClick={enterERP}
+          popoverContent={
+            <p>
+              This ERP is for presentation purpose. Client ERP can be different.
+            </p>
+          }
+        />{" "}
+      </div>
     </div>
   );
 }

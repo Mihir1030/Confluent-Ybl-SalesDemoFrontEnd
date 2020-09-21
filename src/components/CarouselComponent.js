@@ -1,22 +1,13 @@
 import React from "react";
-import PropTypes from "prop-types";
 
 import Carousel from "react-bootstrap/Carousel";
 
-import Button from "./Button";
-
 import yes from "../RESOURCES/yes.jpeg";
 
-function CarouselComponent(props) {
+function CarouselComponent() {
   const style = {
     color: "black",
     fontWeight: 900,
-  };
-
-  const { isLandinghidden, setLandingHideBool } = props;
-
-  const enterERP = () => {
-    setLandingHideBool(!isLandinghidden);
   };
 
   return (
@@ -27,8 +18,7 @@ function CarouselComponent(props) {
           <Carousel.Caption>
             <div className="caption">
               <h3 style={style}>Fund Transfer API</h3>
-              <p style={style}>Transfer funds from your coorporate to anyone</p>
-              <p style={style}> Automate your payments</p>
+              <p style={style}>Transfer funds from your coorporate account</p>
             </div>
           </Carousel.Caption>
         </Carousel.Item>
@@ -43,25 +33,8 @@ function CarouselComponent(props) {
           </Carousel.Caption>
         </Carousel.Item>
       </Carousel>
-      <br />
-      <Button
-        text="Open Demo ERP"
-        variant="success"
-        buttonClick={enterERP}
-        popoverTitle="Demo ERP"
-        popoverContent={
-          <p>
-            This ERP is for presentation purpose. Client ERP can be different.
-          </p>
-        }
-        popoverPlacement="bottom"
-      />{" "}
     </div>
   );
 }
 
-CarouselComponent.propTypes = {
-  isLandinghidden: PropTypes.bool.isRequired,
-  setLandingHideBool: PropTypes.func.isRequired,
-};
 export default CarouselComponent;
