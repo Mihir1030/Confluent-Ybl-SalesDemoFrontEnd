@@ -57,6 +57,7 @@ const CreateFtEntries = ({
       return;
     }
     const paymentObject = {
+      srNo: paymentList.length === 0 ? 1 : paymentList.length + 1,
       uniqueRequestNo: Utils.uniqueRequestNumberGenerator(10),
       beneficiaryName,
       beneficiaryAddress,
