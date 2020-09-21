@@ -5,28 +5,34 @@ import BootStrapForm from "react-bootstrap/Form";
 import BootStrapCol from "react-bootstrap/Col";
 
 function InputComponent(props) {
-  const { xs, controlId, label, type, value, onchangeFun, placeholder } = props;
+  const { xs, label, value, onchangeFun } = props;
+  const regexForWhiteSpace = /\s+/g;
   return (
-    <BootStrapForm.Group as={BootStrapCol} xs={xs} controlId={controlId}>
+    <BootStrapForm.Group
+      as={BootStrapCol}
+      xs={xs}
+      controlId={`form${label.replace(regexForWhiteSpace, "")}`}
+    >
       <BootStrapForm.Label>{label}</BootStrapForm.Label>
       <BootStrapForm.Control
-        type={type}
+        type="text"
         value={value}
         onChange={onchangeFun}
-        placeholder={placeholder}
+        placeholder={label}
       />{" "}
     </BootStrapForm.Group>
   );
 }
 
 InputComponent.propTypes = {
-  xs: PropTypes.string.isRequired,
-  controlId: PropTypes.string.isRequired,
+  xs: PropTypes.string,
   label: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   onchangeFun: PropTypes.func.isRequired,
-  placeholder: PropTypes.string.isRequired,
+};
+
+InputComponent.defaultProps = {
+  xs: "auto",
 };
 
 export default InputComponent;
