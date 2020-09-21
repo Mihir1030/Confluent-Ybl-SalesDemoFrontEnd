@@ -22,11 +22,11 @@ function PaymentTable(props) {
     "Unique Refrence Number",
     "Error",
   ];
-  const tableHeadingList = heading.map((headingText) => (
+  const paymentTableHeadingList = heading.map((headingText) => (
     <th key={uuid()}>{headingText}</th>
   ));
 
-  const entryRows = paymentList.map((entry) => (
+  const paymentTableRows = paymentList.map((entry) => (
     <tr key={uuid()}>
       <td>{entry.uniqueRequestNo}</td>
       <td>{entry.beneficiaryName}</td>
@@ -42,13 +42,13 @@ function PaymentTable(props) {
 
   return (
     <div className="center">
-      <Heading title="Payment Table" headingStyle="headingComponent" />
+      <Heading title="Payments Table" />
 
       <br />
 
       <GridComponent
-        tableHeadingList={tableHeadingList}
-        entryRows={entryRows}
+        tableHeadingList={paymentTableHeadingList}
+        tableRows={paymentTableRows}
       />
     </div>
   );

@@ -23,7 +23,7 @@ function StatusTable(props) {
     <th key={uuid()}>{headingText}</th>
   ));
 
-  const entryRows = paymentList.map((entry) => (
+  const sattusTableRows = paymentList.map((entry) => (
     <tr key={uuid()}>
       <td>{entry.uniqueRequestNo}</td>
       <td>{entry.beneficiaryName}</td>
@@ -37,13 +37,13 @@ function StatusTable(props) {
 
   return (
     <div className="center">
-      <Heading title="Status Table" headingStyle="headingComponent" />
+      <Heading title="Payments Status Table" />
 
       <br />
 
       <GridComponent
         tableHeadingList={tableHeadingList}
-        entryRows={entryRows}
+        tableRows={sattusTableRows}
       />
     </div>
   );
