@@ -6,10 +6,8 @@ import uuid from "react-uuid";
 import GridComponent from "./GridComponent";
 import Heading from "./HeadingComponent";
 
-function PaymentTable(props) {
+const PaymentTable = ({ paymentList }) => {
   console.log("pay table run");
-
-  const { paymentList } = props;
 
   const heading = [
     "Unique request number",
@@ -52,7 +50,7 @@ function PaymentTable(props) {
       />
     </div>
   );
-}
+};
 
 PaymentTable.propTypes = {
   paymentList: PropTypes.arrayOf(PropTypes.object).isRequired,

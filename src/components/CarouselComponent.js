@@ -4,7 +4,7 @@ import Carousel from "react-bootstrap/Carousel";
 
 import yes from "../RESOURCES/yes.jpeg";
 
-function CarouselComponent() {
+const CarouselComponent = () => {
   const style = {
     color: "black",
     fontWeight: 900,
@@ -35,6 +35,6 @@ function CarouselComponent() {
       </Carousel>
     </div>
   );
-}
+};
 
 export default CarouselComponent;

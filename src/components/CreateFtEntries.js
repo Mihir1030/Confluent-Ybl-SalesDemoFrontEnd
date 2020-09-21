@@ -10,7 +10,12 @@ import Button from "./Button";
 
 import Utils from "../utils";
 
-function CreateFtEntries(props) {
+const CreateFtEntries = ({
+  paymentList,
+  setPaymentList,
+  setShowAlert,
+  setAlertMessage,
+}) => {
   const [beneficiaryName, setbeneName] = useState("Demo name");
   const [beneficiaryAddress, setbeneAddress] = useState("Demo address");
   const [beneficiaryBankIfsc, setbeneIfsc] = useState("");
@@ -34,12 +39,12 @@ function CreateFtEntries(props) {
     }
   };
 
-  function onChangeFundTransferMode(event) {
+  const onChangeFundTransferMode = (event) => {
     const { value: transferModeSelected } = event.target;
     setTransferType(transferModeSelected);
-  }
+  };
 
-  function updateEntryList() {
+  const updateEntryList = () => {
     if (
       beneficiaryName === "" ||
       beneficiaryAddress === "" ||
@@ -47,8 +52,8 @@ function CreateFtEntries(props) {
       beneficiaryAccountNumber === "" ||
       transferAmount === ""
     ) {
-      props.setAlertMessage("Please fill in all the fields");
-      props.setShowAlert(true);
+      setAlertMessage("Please fill in all the fields");
+      setShowAlert(true);
       return;
     }
     const paymentObject = {
@@ -69,16 +74,16 @@ function CreateFtEntries(props) {
       status: "",
     };
 
-    const tempEntryList = JSON.parse(JSON.stringify(props.paymentList));
+    const tempEntryList = JSON.parse(JSON.stringify(paymentList));
 
     tempEntryList.push(paymentObject);
 
-    props.setPaymentList(tempEntryList);
+    setPaymentList(tempEntryList);
 
     setbeneIfsc("");
     setbeneAccountNumber("");
     setAmount("");
-  }
+  };
 
   return (
     <div className="createcenter">
@@ -182,7 +187,7 @@ function CreateFtEntries(props) {
       </div>
     </div>
   );
-}
+};
 
 CreateFtEntries.propTypes = {
   paymentList: PropTypes.arrayOf(PropTypes.object).isRequired,

@@ -4,9 +4,10 @@ import PropTypes from "prop-types";
 import CarouselComponent from "./CarouselComponent";
 import Button from "./Button";
 
-function LandingComponent(props) {
-  const { showLandingComponent, setshowLandingComponent } = props;
-
+const LandingComponent = ({
+  showLandingComponent,
+  setshowLandingComponent,
+}) => {
   const enterERP = () => {
     setshowLandingComponent(!showLandingComponent);
   };
@@ -28,7 +29,7 @@ function LandingComponent(props) {
       </div>
     </div>
   );
-}
+};
 
 LandingComponent.propTypes = {
   showLandingComponent: PropTypes.bool.isRequired,

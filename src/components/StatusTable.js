@@ -6,7 +6,7 @@ import uuid from "react-uuid";
 import GridComponent from "./GridComponent";
 import Heading from "./HeadingComponent";
 
-function StatusTable(props) {
+const StatusTable = ({ paymentList }) => {
   console.log("status table run");
   const heading = [
     "Unique request number",
@@ -18,7 +18,6 @@ function StatusTable(props) {
     "Error",
   ];
 
-  const { paymentList } = props;
   const tableHeadingList = heading.map((headingText) => (
     <th key={uuid()}>{headingText}</th>
   ));
@@ -47,7 +46,7 @@ function StatusTable(props) {
       />
     </div>
   );
-}
+};
 
 StatusTable.propTypes = {
   paymentList: PropTypes.arrayOf(PropTypes.object).isRequired,

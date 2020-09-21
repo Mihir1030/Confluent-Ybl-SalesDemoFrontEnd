@@ -4,8 +4,7 @@ import PropTypes from "prop-types";
 import BootStrapForm from "react-bootstrap/Form";
 import BootStrapCol from "react-bootstrap/Col";
 
-function InputComponent(props) {
-  const { xs, label, value, onchangeFun } = props;
+const InputComponent = ({ xs, label, value, onchangeFun }) => {
   const regexForWhiteSpace = /\s+/g;
   return (
     <BootStrapForm.Group
@@ -22,7 +21,7 @@ function InputComponent(props) {
       />{" "}
     </BootStrapForm.Group>
   );
-}
+};
 
 InputComponent.propTypes = {
   xs: PropTypes.string,
