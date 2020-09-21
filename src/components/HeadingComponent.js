@@ -12,8 +12,12 @@ function HeadingComponent(props) {
 }
 
 HeadingComponent.propTypes = {
-  headingStyle: PropTypes.string.isRequired,
+  headingStyle: PropTypes.string,
   title: PropTypes.string.isRequired,
+};
+
+HeadingComponent.defaultProps = {
+  headingStyle: "headingComponent",
 };
 
 export default HeadingComponent;
