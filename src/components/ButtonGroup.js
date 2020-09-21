@@ -100,14 +100,15 @@ function ButtonGroup(props) {
     setPaymentList([...updatedPaymentObjects, ...oldPaymentlistState]);
   };
 
-  const handleFetchError = (error, message) => {
+  const handleFetchError = (error, errorTitle) => {
     if (error === "timeout") {
       setAlertMessage(
         "Please try again/ Check if UAT payment server is under maintanance."
       );
       setShowAlert(true);
     } else {
-      console.error(message, error);
+      setAlertMessage("Please refresh and try again.");
+      console.error(errorTitle, error);
     }
   };
 
@@ -126,37 +127,38 @@ function ButtonGroup(props) {
 
   const initiateFetchRequestsAndGetResponse = async (
     fetchObjArray,
-    errorMessage
+    errorTitle
   ) => {
-    const requestResponses = [];
-    const responses = await Promise.all(fetchObjArray);
-    let jsonData = null;
+    const restApiCallJsonResponses = [];
+    const fetchResponseObjects = await Promise.all(fetchObjArray);
+    let jsonObject = null;
 
     // eslint-disable-next-line no-restricted-syntax
-    for (const response of responses) {
+    for (const response of fetchResponseObjects) {
       if (response.ok) {
         // eslint-disable-next-line no-await-in-loop
-        jsonData = await response.json();
+        jsonObject = await response.json();
+        console.log("hello, request recieved");
 
-        if (jsonData.yestimeout) {
+        if (jsonObject.yestimeout) {
           const error = "timeout";
-          handleFetchError(error, errorMessage);
+          handleFetchError(error, errorTitle);
         }
 
-        requestResponses.push(jsonData);
+        restApiCallJsonResponses.push(jsonObject);
       } else {
-        handleFetchError(response.statusText, errorMessage);
+        handleFetchError(response.statusText, errorTitle);
       }
     }
-    return requestResponses;
+    return restApiCallJsonResponses;
   };
 
   const onPaymentOrStatusClick = (
-    restEndpoint,
     ifCondition,
-    responseProcessingFunction,
+    setLoadingFunction,
+    restEndpoint,
     errorMessage,
-    setLoadingFunction
+    responseProcessingFunction
   ) => {
     const tempPaymentsArray = paymentList.filter((entryInArray) =>
       ifCondition(entryInArray)
@@ -205,10 +207,6 @@ function ButtonGroup(props) {
     return buttonClass;
   };
 
-  const setCreateEntryButtonToolTipTitle = () => {
-    return !showCreateEntry ? "Create Payments" : "Close";
-  };
-
   const setCreateEntryButtonToolTipText = () => {
     const text = !showCreateEntry
       ? "Create demo payments for ERP. These fileds are for demo presentation. Actual payment request will have more field."
@@ -221,25 +219,22 @@ function ButtonGroup(props) {
         text={setTextForCreateEntryButton()}
         variant={setCreateEntryButtonVariantValue()}
         buttonClick={changeCreateFtEntriesVisibility}
-        popoverTitle={setCreateEntryButtonToolTipTitle()}
         popoverContent={<p>{setCreateEntryButtonToolTipText()}</p>}
         popoverPlacement="left"
       />{" "}
       <Button
         text={loadingPayments ? "Sending payments… " : "Start Payment "}
         badge={pendingPaymentsCountBadge}
-        variant="primary"
         isLoading={loadingPayments}
         buttonClick={() =>
           onPaymentOrStatusClick(
-            "https://yes-sales-team-demo-backend.herokuapp.com/yesapi/pay",
             (entry) => !entry.ispaymentDone,
-            processFetchPaymentResponse,
+            setLoadingPayments,
+            "https://yes-sales-team-demo-backend.herokuapp.com/yesapi/pay",
             "this error during payment!:",
-            setLoadingPayments
+            processFetchPaymentResponse
           )
         }
-        popoverTitle="Send Payments"
         popoverContent={
           <p>
             On click Payments will be sent to Yes Bank server for processing
@@ -247,37 +242,32 @@ function ButtonGroup(props) {
             response, which will be updated in Payments table.
           </p>
         }
-        popoverPlacement="bottom"
       />{" "}
       <Button
         text={loadingStatus ? "Getting payment status… " : "Payment Status "}
         badge={pendingStatusCountBadge}
-        variant="primary"
         isLoading={loadingStatus}
         buttonClick={() =>
           onPaymentOrStatusClick(
-            "https://yes-sales-team-demo-backend.herokuapp.com/yesapi/status",
             (entry) => !entry.isstatusDone,
-            processFetchStatusResponse,
+            setLoadingStatus,
+            "https://yes-sales-team-demo-backend.herokuapp.com/yesapi/status",
             "this error during payment status!:",
-            setLoadingStatus
+            processFetchStatusResponse
           )
         }
-        popoverTitle="Get Payments Status"
         popoverContent={
           <p>
             Demo ERP sends the Unique Request Numbers to the bank and gets
             payment status in response. Which will be updated in satus table.
           </p>
         }
-        popoverPlacement="bottom"
       />{" "}
       {/* <Button text="Balance" variant="outline-primary" buttonClick={checkBalance} />{" "} */}
       <Button
         text="Clear data"
         variant="danger"
         buttonClick={clearPaymentsData}
-        popoverTitle="Clear data"
         popoverContent={<p>Delete all payment data from demo ERP.</p>}
         popoverPlacement="right"
       />{" "}
