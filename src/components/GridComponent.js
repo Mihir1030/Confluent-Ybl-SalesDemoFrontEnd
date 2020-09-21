@@ -4,14 +4,14 @@ import PropTypes from "prop-types";
 import BootstrapTable from "react-bootstrap/Table";
 
 function GridComponent(props) {
-  const { tableHeadingList, entryRows } = props;
+  const { tableHeadingList, tableRows } = props;
   return (
     <div className="tableDiv">
       <BootstrapTable striped bordered hover size="sm" responsive>
         <thead>
           <tr>{tableHeadingList}</tr>
         </thead>
-        <tbody>{entryRows}</tbody>
+        <tbody>{tableRows}</tbody>
       </BootstrapTable>
     </div>
   );
@@ -19,7 +19,7 @@ function GridComponent(props) {
 
 GridComponent.propTypes = {
   tableHeadingList: PropTypes.arrayOf(PropTypes.element).isRequired,
-  entryRows: PropTypes.arrayOf(PropTypes.object).isRequired,
+  tableRows: PropTypes.arrayOf(PropTypes.element).isRequired,
 };
 
 export default GridComponent;
