@@ -1,0 +1,25 @@
+/* stylelint-disable */
+.createcenterlogin {
+  /* background-color: #fff; */
+  border-radius: 5px;
+  margin: auto;
+  width: 30%;
+  padding: 0px;
+  box-shadow: 0 4px 8px 0 rgba(170, 168, 168, 0.644),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background: #a1ffce; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #faffd1, #a1ffce);
+  background: linear-gradient(to right, #faffd1, #a1ffce);
+}
+
+.loginheading {
+  color: black;
+  background: #a1ffce; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #faffd1, #a1ffce);
+  background: linear-gradient(to right, #faffd1, #a1ffce);
+  padding: 5px;
+}
+/* stylelint-enable */
