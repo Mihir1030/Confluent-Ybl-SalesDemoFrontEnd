@@ -22,7 +22,7 @@ const ButtonGroup = ({
     setLoadingStatus(false);
   }, [paymentList]);
 
-  const changeCreateFtEntriesVisibility = () => {
+  const onClickchangeCreateFtEntriesVisibility = () => {
     setShowCreateEntry(!showCreateEntry);
   };
 
@@ -33,17 +33,20 @@ const ButtonGroup = ({
 
     // eslint-disable-next-line no-restricted-syntax
     for (const paymentResponseData of paymentResponseDataArray) {
+      const {
+        uniqueRequestNumber,
+        uniqueRefrenceNumber,
+        error,
+      } = paymentResponseData;
       const paymentToUpdate = {
         ...paymentList.find(
-          (entry) =>
-            entry.uniqueRequestNo === paymentResponseData.uniqueRequestNumber
+          (entry) => entry.uniqueRequestNo === uniqueRequestNumber
         ),
       };
 
-      paymentToUpdate.uniqueRefrenceNumber =
-        paymentResponseData.uniqueRefrenceNumber;
+      paymentToUpdate.uniqueRefrenceNumber = uniqueRefrenceNumber;
 
-      paymentToUpdate.error = paymentResponseData.error.includes("IFSC")
+      paymentToUpdate.error = error.includes("IFSC")
         ? "Incorrect IFSC code"
         : "NA";
 
@@ -68,23 +71,25 @@ const ButtonGroup = ({
 
     // eslint-disable-next-line no-restricted-syntax
     for (const statusResponseData of paymentStatusReponseDataArray) {
+      const {
+        requestRefrenceNumber,
+        statuscode,
+        bankRefrenceNumber,
+        error,
+      } = statusResponseData;
       const paymentEntryToUpdate = {
         ...paymentList.find(
-          (entry) =>
-            entry.uniqueRequestNo === statusResponseData.requestRefrenceNumber
+          (entry) => entry.uniqueRequestNo === requestRefrenceNumber
         ),
       };
 
-      paymentEntryToUpdate.status = statusResponseData.statuscode;
+      paymentEntryToUpdate.status = statuscode;
 
-      paymentEntryToUpdate.bankRefrenceNumber =
-        statusResponseData.bankRefrenceNumber;
+      paymentEntryToUpdate.bankRefrenceNumber = bankRefrenceNumber;
 
-      paymentEntryToUpdate.statusError = statusResponseData.error.includes(
-        "Request Not Found"
-      )
+      paymentEntryToUpdate.statusError = error.includes("Request Not Found")
         ? "Request Not Found"
-        : statusResponseData.error;
+        : error;
 
       paymentEntryToUpdate.isstatusDone =
         paymentEntryToUpdate.status === "COMPLETED" ||
@@ -227,7 +232,7 @@ const ButtonGroup = ({
       <Button
         text={setTextForCreateEntryButton()}
         variant={setCreateEntryButtonVariantValue()}
-        buttonClick={changeCreateFtEntriesVisibility}
+        buttonClick={onClickchangeCreateFtEntriesVisibility}
         popoverContent={<p>{setCreateEntryButtonToolTipText()}</p>}
         popoverPlacement="left"
       />{" "}
