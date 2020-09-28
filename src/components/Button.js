@@ -21,6 +21,8 @@ const Button = ({
     </Popover>
   );
 
+  const regexForWhiteSpace = /\s+/g;
+
   return (
     <OverlayTrigger
       // trigger="hover"
@@ -31,6 +33,7 @@ const Button = ({
         variant={variant}
         onClick={buttonClick}
         disabled={isLoading}
+        data-testid={`${text.replace(regexForWhiteSpace, "")}`}
       >
         {text}
         {badge}
