@@ -24,19 +24,31 @@ const PaymentTable = ({ paymentList }) => {
     <th key={uuid()}>{headingText}</th>
   ));
 
-  const paymentTableRows = paymentList.map((entry) => (
-    <tr key={uuid()}>
-      <td>{entry.uniqueRequestNo}</td>
-      <td>{entry.beneficiaryName}</td>
-      <td>{entry.beneficiaryAddress}</td>
-      <td>{entry.beneficiaryBankIfsc}</td>
-      <td>{entry.beneficiaryAccountNumber}</td>
-      <td>{entry.transferAmount}</td>
-      <td>{entry.transferType}</td>
-      <td>{entry.uniqueRefrenceNumber}</td>
-      <td>{entry.error}</td>
-    </tr>
-  ));
+  const paymentTableRows = paymentList.map(
+    ({
+      uniqueRequestNo,
+      beneficiaryName,
+      beneficiaryAddress,
+      beneficiaryBankIfsc,
+      beneficiaryAccountNumber,
+      transferAmount,
+      transferType,
+      uniqueRefrenceNumber,
+      error,
+    }) => (
+      <tr key={uuid()}>
+        <td>{uniqueRequestNo}</td>
+        <td>{beneficiaryName}</td>
+        <td>{beneficiaryAddress}</td>
+        <td>{beneficiaryBankIfsc}</td>
+        <td>{beneficiaryAccountNumber}</td>
+        <td>{transferAmount}</td>
+        <td>{transferType}</td>
+        <td>{uniqueRefrenceNumber}</td>
+        <td>{error}</td>
+      </tr>
+    )
+  );
 
   return (
     <div className="center">
